@@ -24,3 +24,15 @@ unsigned char uart_rx(void)
 	/* Get and return received data from buffer */
 	return UDR0;
 }
+
+static void uart_init(int baud) {
+    unsigned int ubrr = (F_CPU/(16*baud))-1
+    
+    /* Set baud rate */
+    UBRRH = (unsigned char)(ubrr>>8);
+    UBRRL = (unsigned char)ubrr;
+    /* Enable receiver and transmitter */
+    UCSR0B = (1<<RXEN)|(1<<TXEN);
+    /* Set frame format: 8data, 2stop bit */
+    UCSR0C = (1<<URSEL)|(1<<USBS)|(3<<UCSZ0)
+}

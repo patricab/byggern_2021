@@ -1,5 +1,8 @@
 # List all source files to be compiled; separate with space
-SOURCE_FILES := main.c
+# SOURCE_FILES := main.c
+SOURCE_DIR := src
+INC_DIR := inc
+SRC := $(shell find $(SRC_DIR) -name ".c")
 
 # Set this flag to "yes" (no quotes) to use JTAG; otherwise ISP (SPI) is used
 PROGRAM_WITH_JTAG := yes
@@ -15,9 +18,9 @@ TARGET_CPU := atmega162
 TARGET_DEVICE := m162
 
 CC := avr-gcc
-CFLAGS := -O -std=c11 -mmcu=$(TARGET_CPU) -ggdb
+CFLAGS := -O -std=c11 -mmcu=$(TARGET_CPU) -ggdb -I$(INC_DIR)
 
-OBJECT_FILES = $(SOURCE_FILES:%.c=$(BUILD_DIR)/%.o)
+OBJECT_FILES = $(SRC:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 
 .DEFAULT_GOAL := $(BUILD_DIR)/main.hex
 
@@ -28,7 +31,7 @@ $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BUILD_DIR)/main.hex: $(OBJECT_FILES) | $(BUILD_DIR)
-	$(CC) $(CFLAGS) $^ -o $(BUILD_DIR)/a.out
+	$(CC) $(CFLAGS) $^ -B $(SRC_DIR) --o $(BUILD_DIR)/a.out
 	avr-objcopy -j .text -j .data -O ihex $(BUILD_DIR)/a.out $(BUILD_DIR)/main.hex
 
 .PHONY: flash

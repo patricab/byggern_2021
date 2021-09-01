@@ -10,7 +10,6 @@
 #include <util/delay.h>
 #include <stdlib.h>
 
-#include <bit.h>
 #include <uart.h>
 
 int main(void)
