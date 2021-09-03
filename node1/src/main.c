@@ -6,17 +6,20 @@
  */ 
 
 #define F_CPU 16000000
+#define __AVR_ATmega162__
+
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdlib.h>
 
 #include <uart.h>
+#include <bit.h>
 
 int main(void)
 {
     /* Replace with your application code */
 	DDRA |= (1 << PA1);
-	sei();
+	// sei();
 	
 	
     while (1) 

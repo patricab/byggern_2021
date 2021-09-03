@@ -3,9 +3,9 @@
 
 
 /**
- * @brief Send data over UART
+  @brief Send data over UART
 
-   @param data Data to be sent
+  @param data Data to be sent
 
    @retval 0 if successful, 1 if errors occured
  */

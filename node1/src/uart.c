@@ -1,4 +1,5 @@
 #define F_CPU 16000000
+// #define __AVR_ATmega162__
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -6,6 +7,13 @@
 #include <bit.h>
 #include <uart.h>
 
+/**
+  @brief Transmit data throught UART
+
+  @param data Data to be sent (8-bit)
+
+  @retval 0 if succesful
+*/
 int uart_tx(unsigned char data) //taken from the datasheet
 {
 	/* Wait for empty transmit buffer */
@@ -25,14 +33,22 @@ unsigned char uart_rx(void)
 	return UDR0;
 }
 
-static void uart_init(int baud) {
-    unsigned int ubrr = (F_CPU/(16*baud))-1
+/**
+  @brief Initialize UART 
+
+  @param baud Baudrate of UART transaction
+*/
+void uart_init(int baud) {
+    unsigned int ubrr = (F_CPU/(16*baud))-1; // Register value for baud rate
+
+	// Flush UART transmitter and reciever
+    UCSR0B = (0<<RXEN0)|(0<<TXEN0);
     
     /* Set baud rate */
-    UBRRH = (unsigned char)(ubrr>>8);
-    UBRRL = (unsigned char)ubrr;
+    UBRR0H = (unsigned char)(ubrr>>8);
+    UBRR0L = (unsigned char)ubrr;
     /* Enable receiver and transmitter */
-    UCSR0B = (1<<RXEN)|(1<<TXEN);
+    UCSR0B = (1<<RXEN0)|(1<<TXEN0);
     /* Set frame format: 8data, 2stop bit */
-    UCSR0C = (1<<URSEL)|(1<<USBS)|(3<<UCSZ0)
+    UCSR0C = (1<<URSEL0)|(1<<USBS0)|(3<<UCSZ00);
 }
