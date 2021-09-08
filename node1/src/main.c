@@ -12,7 +12,7 @@
 #include <util/delay.h>
 #include <stdlib.h>
 
-#include <uart.h>
+#include <test.h>
 #include <bit.h>
 
 int main(void)
@@ -30,6 +30,6 @@ int main(void)
 	
     while (1) 
     {
-	ext_ram[0] = 0x1;
+		SRAM_test();
     }
 }
