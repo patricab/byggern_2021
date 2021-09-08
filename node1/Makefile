@@ -13,7 +13,7 @@ endif
 
 BUILD_DIR := build
 TARGET_CPU := atmega162
-TARGET_DEVICE := iom162
+TARGET_DEVICE := m162
 
 CC := avr-gcc
 CFLAGS := -O -std=c11 -mmcu=$(TARGET_CPU) -ggdb -Iinc -w
