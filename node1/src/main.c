@@ -17,21 +17,19 @@
 
 int main(void)
 {
-    /* Replace with your application code */
-	DDRA |= (1 << PA1);
-	// sei();
-	
+	volatile char *ext_ram = (char *) 0x1800; // Start address for the SRAM
+
+	// Enable external SRAM
+	// set_bit(MCUCR, SRE);
+	MCUCR |= (1 << SRE);
+
+	// Mask JTAG bits
+	// set_bit(SFIOR, XMM2);
+	SFIOR |= (1 << XMM2);
+
 	
     while (1) 
     {
-		PORTA |= (1 << PA1);
-		_delay_ms(500);
-		
-		PORTA &= (0 << PA1);
-		_delay_ms(500);
-		
-		
-		
-		
+	ext_ram[0] = 0x1;
     }
 }
