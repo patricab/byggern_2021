@@ -2,7 +2,7 @@
 #define UART_H
 
 // RX buffer
-extern unsigned char rx_data[16];
+// extern unsigned char rx_data[16];
 
 /**
 * NOTE: The scheema uses a 16 bit packet length, with 15 data bits, and a terminator 
@@ -16,14 +16,14 @@ extern unsigned char rx_data[16];
 
   @retval 0 if successful, 1 if errors occured
  */
-int uart_tx(unsigned char data); //taken from the datasheet
+int uart_tx(char data); // Parts are copied from the Atmega162 datasheet!
 
 /**
   @brief Recieve data over UART, fills RX buffer (rx_data)
 
   @retval 0 if succesful, 1 if error occured
  */
-int uart_rx(void);
+int uart_rx(void); // Parts are copied from the Atmega162 datasheet!
 
 /**
   @brief Initialize UART 

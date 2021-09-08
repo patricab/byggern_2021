@@ -11,27 +11,25 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdlib.h>
-
+#include <stdio.h>
 #include <uart.h>
 #include <bit.h>
 
 int main(void)
 {
-    /* Replace with your application code */
-	DDRA |= (1 << PA1);
-	// sei();
-	
-	
+    /* Replace with your applicatiWon code */
+	uart_init(9600);
+
     while (1) 
     {
-		PORTA |= (1 << PA1);
-		_delay_ms(500);
+		// PORTA |= (1 << PA1);
+		// _delay_ms(500);
 		
-		PORTA &= (0 << PA1);
-		_delay_ms(500);
-		
-		
-		
-		
+		// PORTA &= (0 << PA1);
+		// _delay_ms(500);
+		// uart_tx("1");
+		// uart_rx();
+
+		fdevopen(uart_tx("1"), uart_rx());
     }
 }
