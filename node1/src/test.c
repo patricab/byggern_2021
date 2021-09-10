@@ -1,10 +1,3 @@
-/*
- * Test_program.c
- *
- * Created: 01.09.2021 10:22:56
- * Author : andre
- */ 
-
 #define F_CPU 4915200
 #define __AVR_ATmega162__
 
@@ -15,17 +8,16 @@
 #include <uart.h>
 #include <bit.h>
 
-int main(void)
+int test(void)
 {
     /* Replace with your applicatiWon code */
 	uart_init(9600);
 
     while (1) 
     {
-		PORTA |= (1 << PA1);
-		_delay_ms(500);
-		
-		PORTA &= (0 << PA1);
-		_delay_ms(500);
+		uart_tx('A');
+		_delay_ms(1000);
+		unsigned char rx = uart_rx(); // NOTE: Needs to be called by unsigned char!
+		uart_tx(rx);
     }
 }
