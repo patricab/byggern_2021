@@ -22,8 +22,15 @@ int main(void)
 
     while (1) 
     {
-		// PORTA |= (1 << PA1);
-		// _delay_ms(500);
+		PORTA |= (1 << PA1);
+		_delay_ms(500);
+		
+		PORTA &= (0 << PA1);
+		_delay_ms(500);
+		
+		//test comment 
+		
+		
 		
 		// PORTA &= (0 << PA1);
 		// _delay_ms(500);
