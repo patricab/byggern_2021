@@ -2,7 +2,15 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"name": "node1",
+			"path": "node1/node1"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.associations": {
+			"test.h": "c"
+		}
+	}
 }
