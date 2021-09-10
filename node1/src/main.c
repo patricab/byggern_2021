@@ -30,7 +30,7 @@ int main(void)
 		PORTA &= (0 << PA1);
 		_delay_ms(500);
 		
-		//test comment 2
+		//test comment by eirik
 		
 		
 		
