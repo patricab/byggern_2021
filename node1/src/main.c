@@ -18,16 +18,16 @@
 int main(void)
 {
     /* Replace with your application code */
-	DDRA |= (1 << PA1);
+	DDRB |= (1 << PB1);
 	// sei();
 	
 	
     while (1) 
     {
-		PORTA |= (1 << PA1);
+		PORTB |= (1 << PB1);
 		_delay_ms(500);
 		
-		PORTA &= (0 << PA1);
+		PORTB &= (0 << PB1);
 		_delay_ms(500);
 		
 		//test comment by eirik
