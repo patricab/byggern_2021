@@ -5,7 +5,7 @@
  * Author : andre
  */ 
 
-#define F_CPU 16000000
+#define F_CPU 4915200
 #define __AVR_ATmega162__
 
 #include <avr/io.h>
@@ -13,10 +13,13 @@
 #include <stdlib.h>
 
 #include <test.h>
+#include <stdio.h>
+#include <uart.h>
 #include <bit.h>
 
 int main(void)
 {
+	uart_init(9600);
 	volatile char *ext_ram = (char *) 0x1800; // Start address for the SRAM
 
 	// Enable external SRAM
@@ -27,9 +30,15 @@ int main(void)
 	// set_bit(SFIOR, XMM2);
 	SFIOR |= (1 << XMM2);
 
+	SRAM_test();
+    /* Replace with your applicatiWon code */
 	
     while (1) 
     {
-		SRAM_test();
+		PORTA |= (1 << PA1);
+		_delay_ms(500);
+		
+		PORTA &= (0 << PA1);
+		_delay_ms(500);
     }
 }
