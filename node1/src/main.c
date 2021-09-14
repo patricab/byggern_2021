@@ -5,13 +5,13 @@
  * Author : andre
  */ 
 
-#define F_CPU 16000000
+#define F_CPU 4915200
 #define __AVR_ATmega162__
 
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdlib.h>
-
+#include <stdio.h>
 #include <uart.h>
 #include <bit.h>
 
@@ -29,10 +29,5 @@ int main(void)
 		
 		PORTB &= (0 << PB1);
 		_delay_ms(500);
-		
-		//test comment by eirik
-		
-		
-		
     }
 }
