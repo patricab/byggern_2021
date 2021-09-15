@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <test.h>
+#include <stdint.h>
 
 void SRAM_test(void)
 {

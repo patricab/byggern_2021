@@ -11,6 +11,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 #include <test.h>
 #include <stdio.h>
@@ -21,6 +22,11 @@ int main(void)
 {
 	uart_init(9600);
 	volatile char *ext_ram = (char *) 0x1800; // Start address for the SRAM
+
+	// set PortC as output
+	DDRC = 0xFF;
+	PORTC = 0x00;
+	
 
 	// Enable external SRAM
 	// set_bit(MCUCR, SRE);
