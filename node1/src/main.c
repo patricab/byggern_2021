@@ -24,13 +24,22 @@ int main(void)
 	volatile char *ext_ram = (char *) 0x1800; // Start address for the SRAM
 
 	// set PortC as output
-	DDRC = 0xFF;
+	DDRC = 15;
 	PORTC = 0x00;
+
+	DDRA = 0xFF;
+	PORTA = 0x00;
+
+
 	
 
 	// Enable external SRAM
 	// set_bit(MCUCR, SRE);
 	MCUCR |= (1 << SRE);
+
+	// Set wait state
+	EMCUCR |= (1 << SRW11);
+
 
 	// Mask JTAG bits
 	// set_bit(SFIOR, XMM2);
@@ -41,10 +50,14 @@ int main(void)
 	
     while (1) 
     {
-		PORTA |= (1 << PA1);
+		PORTA |= (1 << PA2);
+		PORTA |= (1 << PA0);
 		_delay_ms(500);
 		
-		PORTA &= (0 << PA1);
+		PORTA &= (0 << PA2);
+		PORTA &= (0 << PA0);
 		_delay_ms(500);
     }
 }
+
+

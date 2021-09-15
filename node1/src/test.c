@@ -1,6 +1,10 @@
+#define F_CPU 4915200
+
 #include <stdlib.h>
 #include <test.h>
 #include <stdint.h>
+#include <util/delay.h>
+
 
 void SRAM_test(void)
 {
@@ -15,23 +19,25 @@ void SRAM_test(void)
     // Write phase: Immediately check that the correct value was stored
     srand(seed);
     for (uint16_t i = 0; i < ext_ram_size; i++) {
-        uint8_t some_value = rand();
-        ext_ram[i] = some_value;
+        uint8_t some_value = 0xFF;
+        ext_ram[i] = some_value; 
         uint8_t retreived_value = ext_ram[i];
         if (retreived_value != some_value) {
-            printf("Write phase error: ext_ram[%4d] = %02X (should be %02X)\n", i, retreived_value, some_value);
+            printf("Write phase error: ext_ram[%4x] = %02X (should be %02X)\n\r", i, retreived_value, some_value);
             write_errors++;
+            _delay_ms(50);
         }
     }
     // Retrieval phase: Check that no values were changed during or after the write phase
     srand(seed);
     // reset the PRNG to the state it had before the write phase
     for (uint16_t i = 0; i < ext_ram_size; i++) {
-        uint8_t some_value = rand();
+        uint8_t some_value = 0xFF;
         uint8_t retreived_value = ext_ram[i];
         if (retreived_value != some_value) {
-            printf("Retrieval phase error: ext_ram[%4d] = %02X (should be %02X)\n", i, retreived_value, some_value);
+            printf("Retrieval phase error: ext_ram[%4x] = %02X (should be %02X)\n\r", i, retreived_value, some_value);
             retrieval_errors++;
+            _delay_ms(50);
         }
     }
     printf("SRAM test completed with \n%4d errors in write phase and \n%4d errors in retrieval phase\n\n", write_errors, retrieval_errors);

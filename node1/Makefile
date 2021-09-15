@@ -51,3 +51,9 @@ debug:
 	sleep 2
 	avr-gdb -tui -iex "target remote localhost:4242" $(BUILD_DIR)/a.out
 	killall -s 9 avarice	
+
+.PHONY: fuse
+fuse :
+	avrdude -p $(TARGET_DEVICE) -c $(PROGRAMMER) -U efuse:w:0xff:m
+	avrdude -p $(TARGET_DEVICE) -c $(PROGRAMMER) -U hfuse:w:0x91:m
+	avrdude -p $(TARGET_DEVICE) -c $(PROGRAMMER) -U lfuse:w:0xed:m
