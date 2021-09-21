@@ -1,9 +1,24 @@
 
 #include <avr/io.h>
 
-void ADC_init(void)
+/**
+ * @brief Initialize ADC
+ * 
+ */
+
+void adc_init(void)
 {
-    TCCR0 = (1 << WGM00) | (1 << WGM01) | (1 << COM00) | (1 << COM01) | (1 << CS00);
+    //PWM setup
+    //set PD5 as output
+    DDRD = (1 << PD5);
+    //Set duty cycle to 50%
+    OCR1A = 0x01FF; 
+    // Set compare output mode and 10 bit fast PWM
+    TCCR1A = (1 << COM1A1) | (1 << WGM11) | (1 << WGM10);
+    //set prescaling to 1
+    TCCR1B =  (1 << CS10);
+
+
 
 
 

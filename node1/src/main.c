@@ -21,6 +21,9 @@ int main(void)
 	DDRB |= (1 << PB1);
 	// sei();
 	
+ 
+
+	adc_init();
 	
     while (1) 
     {

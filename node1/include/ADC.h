@@ -1,10 +1,13 @@
 #ifndef ADC_H
 #define ADC_H
 
+/**
+ * @brief Initialize ADC
+ * 
+ */
 
 
-
-void ADC_init(void);
+void adc_init(void);
 
 
 #endif
