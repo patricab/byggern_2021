@@ -1,46 +1,45 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
-#include <sram.h>
 #include <avr/io.h>
 
-#define SRAM_ADRESS 0x800
+#include <sram.h>
+#include <ext.h>
+
+#define SRAM_ADDRESS 0x800
 
 /**
- * @brief Write to SRAM adress
+ * @brief Write to SRAM address
  * 
- * @param adress Adress in SRAM
+ * @param address Address in SRAM
  * @param data Data to be sent
  * @return 0 if successful, 1 if errors occured
  */
-int sram_write(uint16_t adress, char data) {
-    if (adress > 0x7FF)
+int sram_write(uint16_t address, char data) {
+    if (address > 0x7FF)
     {
-        printf("SRAM adress out of range\n");
+        printf("SRAM address out of range\n");
         return 1;
     }
-    volatile char *ext_ram = SRAM_ADRESS;
-    ext_ram[adress] = data;
 
+    ext_write(SRAM_ADDRESS, address, data);
     return 0;
 }
 
 /**
- * @brief Read from SRAM adress
+ * @brief Read from SRAM address
  * 
- * @param adress Adress in SRAM
+ * @param address Address in SRAM
  * @return char 
  */
-char sram_read(uint16_t adress) {
-    if (adress > 0x7FF)
+char sram_read(uint16_t address) {
+    if (address > 0x7FF)
     {
-        printf("SRAM adress out of range\n");
+        printf("SRAM address out of range\n");
         return 1;
     }
 
-    volatile char *ext_ram = SRAM_ADRESS;
-
-    return ext_ram[adress];
+    return ext_read(SRAM_ADDRESS, address);
 }
 
 /**
@@ -54,5 +53,4 @@ void sram_init(void) {
 	// Mask JTAG bits
     SFIOR &= ~(111 << XMM0);
     SFIOR |= (1 << XMM2);
-
 }

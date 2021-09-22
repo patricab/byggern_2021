@@ -4,21 +4,21 @@
 #include <stdint.h>
 
 /**
- * @brief Write to SRAM adress
+ * @brief Write to SRAM address
  * 
- * @param adress Adress in SRAM
+ * @param address Address in SRAM
  * @param data Data to be sent
  * @return 0 if successful, 1 if errors occured
  */
-int sram_write(uint16_t adress, char data);
+int sram_write(uint16_t address, char data);
 
 /**
- * @brief Read from SRAM adress
+ * @brief Read from SRAM address
  * 
- * @param adress Adress in SRAM
+ * @param address Address in SRAM
  * @return char 
  */
-char sram_read(uint16_t adress);
+char sram_read(uint16_t address);
 
 /**
  * @brief Initialize SRAM
