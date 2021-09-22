@@ -12,13 +12,14 @@
 #include <util/delay.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <adc_test.h>
 
 int main(void)
 {
     // /* Replace with your application code */
 	// DDRB |= (1 << PB1);
 	// sei();
-	
+	adc_test();	
 	
 //     while (1) 
 //     {

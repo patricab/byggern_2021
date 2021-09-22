@@ -8,7 +8,7 @@
 #include <adc.h>
 #include <uart.h>
 
-int test(void)
+void adc_test(void)
 {
     uart_init(9600);
 
