@@ -22,9 +22,17 @@ int main(void)
 	uart_init(9600);
 	ext_init();
 
-	ext_write(0x800, 0x00, 0x1FF);
-	_delay_ms(100);
-	uart_tx(ext_read(0x800, 0x00));
+	while (1)
+	{
+		ext_write(0x1800, 0x00, 'B');
+		_delay_ms(100);
+		uart_tx(ext_read(0x1800, 0x00));
+		// volatile char *ext = 0x1800; // Set adress pointer
+		// ext[0x00] = 'A';
+		// _delay_ms(100);
+		// uart_tx(ext[0x00]);
+	}
+
 	
 //     while (1) 
 //     {
