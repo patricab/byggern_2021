@@ -1,6 +1,8 @@
 #ifdef SRAM_H
 #define SRAM_H
 
+#include <stdint.h>
+
 /**
  * @brief Write to SRAM adress
  * 

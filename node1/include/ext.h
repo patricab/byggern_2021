@@ -19,4 +19,10 @@ void ext_write(char mem_adress, char adress, char data);
  */
 char ext_read(char mem_adress, char adress);
 
+/**
+ * @brief Initialize external RAM
+ * 
+ */
+void ext_init(void);
+
 #endif
