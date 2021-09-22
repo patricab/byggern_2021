@@ -12,25 +12,20 @@
 #include <util/delay.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <uart.h>
-#include <bit.h>
 
 int main(void)
 {
-    /* Replace with your application code */
-	DDRB |= (1 << PB1);
+    // /* Replace with your application code */
+	// DDRB |= (1 << PB1);
 	// sei();
 	
- 
-
-	adc_init();
 	
-    while (1) 
-    {
-		PORTB |= (1 << PB1);
-		_delay_ms(500);
+//     while (1) 
+//     {
+// 		PORTB |= (1 << PB1);
+// 		_delay_ms(500);
 		
-		PORTB &= (0 << PB1);
-		_delay_ms(500);
-    }
+// 		PORTB &= (0 << PB1);
+// 		_delay_ms(500);
+//     }
 }

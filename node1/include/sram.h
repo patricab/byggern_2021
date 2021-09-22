@@ -1,4 +1,4 @@
-#ifdef SRAM_H
+#ifndef SRAM_H
 #define SRAM_H
 
 #include <stdint.h>

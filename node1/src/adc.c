@@ -1,22 +1,27 @@
+#ifndef F_CPU
+#define F_CPU 4915200
+#endif
+
+#include <util/delay.h>
 #include <avr/io.h>
-#include <adc.h>
+#include <stdlib.h>
+#include <bit.h>
 #include <ext.h>
+#include <adc.h>
 
 #define ADC_ADDRESS 0x1400
-
 
 /**
  * @brief Read from ADC
  * 
- * @param channel ADC channel to read. See _channel_t_
  * @return char* Array of channel data
  */
-char *adc_read(channel_t channel) {
-    char data[8] = {0};
+char *adc_read(void) {
+    char data[4] = {0};
 
     ext_write(ADC_ADDRESS, 0x00, 0x00); // _WR strobe. Starts ADC sample and conversion
     _delay_ms(60); // Wait for conversion time
-    for (int i = 0; i <= channel; i++)
+    for (int i = 0; i < 4; i++)
     {
        data[i] = ext_read(ADC_ADDRESS, 0x00); // _RD strobe. Read ADC channel in sequence
     }
@@ -39,8 +44,11 @@ void adc_init(void)
     TCCR1B =  (1 << CS10); // Set prescaling to 1
 
     // ADC setup
-    DDRB |= (1 << DDB6) | (1 << DDB7); // Set _WR and _RD bits
-    PORTB |= (1 << PB7) | (1 << PB6); 
+    set_bit(DDRB, DDB6); // Set _WR and _RD bits
+    set_bit(DDRB, DDB7);
+    
+    set_bit(PORTB, PB6);
+    set_bit(PORTB, PB7);
     
 
 
