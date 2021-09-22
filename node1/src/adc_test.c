@@ -11,12 +11,13 @@
 void adc_test(void)
 {
     uart_init(9600);
+    adc_init();
 
     while (1)
     {
         char *read = adc_read();
-        printf("%c\t%c\t%c\t%c\n", read[0], read[1], read[2], read[3]);
-        _delay_ms(10);
+        uart_tx(read[0]);
+        _delay_ms(100);
     }
     
 }

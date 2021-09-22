@@ -15,23 +15,29 @@
 #include <adc_test.h>
 #include <uart.h>
 #include <ext.h>
+#include <sram.h>
 
 int main(void)
 {
-	// adc_test();	
-	uart_init(9600);
-	ext_init();
+	adc_test();	
 
-	while (1)
-	{
-		ext_write(0x1800, 0x00, 'B');
-		_delay_ms(100);
-		uart_tx(ext_read(0x1800, 0x00));
-		// volatile char *ext = 0x1800; // Set adress pointer
-		// ext[0x00] = 'A';
-		// _delay_ms(100);
-		// uart_tx(ext[0x00]);
-	}
+	// ext_init();
+
+	// sram_init();
+	// uart_init(9600);
+
+	// while (1)
+	// {
+	// 	// ext_write(0x1800, 0x00, 'B');
+	// 	sram_write(0x00, 'C');
+	// 	_delay_ms(100);
+	// 	// uart_tx(ext_read(0x1800, 0x00));
+	// 	uart_tx(sram_read(0x00));
+	// 	// volatile char *ext = 0x1800; // Set adress pointer
+	// 	// ext[0x00] = 'A';
+	// 	// _delay_ms(100);
+	// 	// uart_tx(ext[0x00]);
+	// }
 
 	
 //     while (1) 

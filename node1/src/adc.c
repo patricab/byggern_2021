@@ -35,6 +35,8 @@ char *adc_read(void) {
  */
 void adc_init(void)
 {
+    ext_init();
+
     // PWM clock setup
     DDRD = (1 << PD5); //set PD5 as output
     OCR1A = 0x01FF; //Set duty cycle to 50% 
@@ -46,10 +48,6 @@ void adc_init(void)
     // ADC setup
     set_bit(DDRB, DDB6); // Set _WR and _RD bits
     set_bit(DDRB, DDB7);
-    
     set_bit(PORTB, PB6);
     set_bit(PORTB, PB7);
-    
-
-
 }
