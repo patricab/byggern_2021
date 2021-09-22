@@ -1,5 +1,6 @@
 
 #include <avr/io.h>
+#include <bit.h>
 
 /**
  * @brief Initialize ADC
@@ -16,32 +17,11 @@ void adc_init(void)
     // Set compare output mode and 10 bit fast PWM
     TCCR1A = (1 << COM1A1) | (1 << WGM11) | (1 << WGM10);
     //set prescaling to 1
-    TCCR1B =  (1 << CS10);
 
-    //Timer setup 
-    //Prescaler to 8
-    //set interrupt
-    //set bit i timsk register
-    
-    //disable interrupt
-    //cli();
-
-    //TIFR = (1 << OCF0);
-    //OCR0 = //output compare
-    //TCCR0 = (1 << CS01)  | (1 << WGM01);
-    
-    //enable interrupt
-    //sei();
+    set_bit(TCCR1B, CS10); //TCCR1B =  (1 << CS10);
 
     
-
-
-
-
 }
 
-//commands for timer0 interrupt
-//ISR(TIMER0_COMP_vect) 
-    //do action
 
 

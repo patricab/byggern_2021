@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <sram.h>
+#include <avr/io.h>
 
 #define SRAM_ADRESS 0x800
 
