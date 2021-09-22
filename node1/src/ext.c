@@ -11,7 +11,6 @@
  */
 void ext_write(char mem_adress, char adress, char data) {
 
-    sram_init();
     volatile char *ext = mem_adress; // Set adress pointer
     ext[adress] = data;
 
@@ -26,7 +25,6 @@ void ext_write(char mem_adress, char adress, char data) {
  */
 char ext_read(char mem_adress, char adress) {
 
-    sram_init();
     volatile char *ext = mem_adress; // Set adress pointer
     return ext[adress];
 

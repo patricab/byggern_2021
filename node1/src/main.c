@@ -13,13 +13,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <adc_test.h>
+#include <uart.h>
+#include <ext.h>
 
 int main(void)
 {
-    // /* Replace with your application code */
-	// DDRB |= (1 << PB1);
-	// sei();
-	adc_test();	
+	// adc_test();	
+	uart_init(9600);
+	ext_init();
+
+	ext_write(0x800, 0x00, 0x1FF);
+	_delay_ms(100);
+	uart_tx(ext_read(0x800, 0x00));
 	
 //     while (1) 
 //     {
