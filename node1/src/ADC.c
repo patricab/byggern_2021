@@ -18,9 +18,30 @@ void adc_init(void)
     //set prescaling to 1
     TCCR1B =  (1 << CS10);
 
+    //Timer setup 
+    //Prescaler to 8
+    //set interrupt
+    //set bit i timsk register
+    
+    //disable interrupt
+    //cli();
 
+    //TIFR = (1 << OCF0);
+    //OCR0 = //output compare
+    //TCCR0 = (1 << CS01)  | (1 << WGM01);
+    
+    //enable interrupt
+    //sei();
+
+    
 
 
 
 
 }
+
+//commands for timer0 interrupt
+//ISR(TIMER0_COMP_vect) 
+    //do action
+
+
