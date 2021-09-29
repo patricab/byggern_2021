@@ -8,7 +8,7 @@
  * @param adress Internal adress of memory partition
  * @param data Data to be written
  */
-void ext_write(char mem_adress, char adress, char data);
+void ext_write(char* mem_adress, char adress, char data);
 
 /**
  * @brief Read from external memory
@@ -17,7 +17,7 @@ void ext_write(char mem_adress, char adress, char data);
  * @param adress Internal adress of memory partition
  * @return char Data to be read
  */
-char ext_read(char mem_adress, char adress);
+char ext_read(char* mem_adress, char adress);
 
 /**
  * @brief Initialize external RAM
