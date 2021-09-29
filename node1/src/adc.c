@@ -17,7 +17,7 @@
  * @return char* Array of channel data
  */
 char *adc_read(void) {
-    char data[4] = {0};
+    char *data = malloc(sizeof(char)*4);
 
     ext_write(ADC_ADDRESS, 0x00, 0x00); // _WR strobe. Starts ADC sample and conversion
     _delay_ms(60); // Wait for conversion time
@@ -26,12 +26,12 @@ char *adc_read(void) {
        data[i] = ext_read(ADC_ADDRESS, 0x00); // _RD strobe. Read ADC channel in sequence
     }
     
+    // printf("%x\r\n", data[0] & 0xff);
     return data;
 }
 
 /**
  * @brief Initialize ADC
- * 
  */
 void adc_init(void)
 {
@@ -46,8 +46,8 @@ void adc_init(void)
     TCCR1B =  (1 << CS10); // Set prescaling to 1
 
     // ADC setup
-    set_bit(DDRB, DDB6); // Set _WR and _RD bits
-    set_bit(DDRB, DDB7);
-    set_bit(PORTB, PB6);
-    set_bit(PORTB, PB7);
+    // set_bit(DDRB, DDB6); // Set _WR and _RD bits
+    // set_bit(DDRB, DDB7);
+    // set_bit(PORTB, PB6);
+    // set_bit(PORTB, PB7);
 }
