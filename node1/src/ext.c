@@ -2,6 +2,7 @@
 #include <ext.h>
 #include <sram.h>
 
+
 /**
  * @brief Write to external memory
  * 
@@ -9,7 +10,7 @@
  * @param adress Internal adress of memory partition
  * @param data Data to be written
  */
-void ext_write(char mem_adress, char adress, char data) {
+void ext_write(char* mem_adress, char adress, char data) {
 
     volatile char *ext = mem_adress; // Set adress pointer
     ext[adress] = data;
@@ -23,7 +24,7 @@ void ext_write(char mem_adress, char adress, char data) {
  * @param adress Internal adress of memory partition
  * @return char Data to be read
  */
-char ext_read(char mem_adress, char adress) {
+char ext_read(char* mem_adress, char adress) {
 
     volatile char *ext = mem_adress; // Set adress pointer
     return ext[adress];
