@@ -19,7 +19,7 @@ void adc_test(void)
 
     while (1)
     {
-        char *data = adc_read();
+        adc_read(data);
         
         // printf("%x\r\n", data[0] & 0xff);
 

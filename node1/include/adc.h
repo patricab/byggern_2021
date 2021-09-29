@@ -4,9 +4,9 @@
 /**
  * @brief Read from ADC
  * 
- * @return char* Array of channel data
+ * @param ret adc_t return struct
  */
-char *adc_read(void);
+void adc_read(char *data);
 
 /**
  * @brief Initialize ADC
