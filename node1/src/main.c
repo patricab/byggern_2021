@@ -14,20 +14,20 @@
 #include <stdio.h>
 #include <uart.h>
 #include <bit.h>
+#include <oled.h>
+#include <ext.h>
+#include <string.h>
+
+
 
 int main(void)
 {
-    /* Replace with your application code */
-	DDRB |= (1 << PB1);
-	// sei();
+	ext_init();
+	oled_init();
+	uart_init(9600);
 	
-	
-    while (1) 
-    {
-		PORTB |= (1 << PB1);
-		_delay_ms(500);
-		
-		PORTB &= (0 << PB1);
-		_delay_ms(500);
-    }
+	oled_reset();
+	oled_print("SEND NUDES");
+	oled_goto_pos(1,0);
+	oled_print("Oled");
 }

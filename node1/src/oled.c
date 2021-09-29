@@ -3,6 +3,8 @@
 #include <fonts.h>
 #include <ext.h>
 #include <avr/pgmspace.h>
+#include <uart.h>
+#include <string.h>
 
 
 void oled_init(void)
@@ -29,16 +31,16 @@ void oled_init(void)
     ext_write(0x1000, 0x00, 0xa4); //out follows RAM content
     ext_write(0x1000, 0x00, 0xa6); //set normal display
     ext_write(0x1000, 0x00, 0xaf); // display on
-    ext_write(0x1000, 0x00, 0xa5); 
+    //ext_write(0x1000, 0x00, 0xa5); // all pixels on
 }
 
 void oled_reset()
     {
         for (int i = 0; i < 8; i++)
         {
-            oled_clear_line(i)
+            oled_clear_line(i);
         }
-        oled_home()
+        oled_home();
     }
 
 void oled_home()
@@ -55,7 +57,7 @@ void oled_goto_column(int column)
 
 void oled_goto_line(int line)
     {
-        ext_write(0x1000, 0x00,  0xB0 + line);
+        ext_write(0x1000, 0x00,  0xb0 + line);
     }
 
 void oled_clear_line(int line)
@@ -74,16 +76,24 @@ void oled_goto_pos(int line, int column)
     }
 
 
-void oled_print(const char string[])
+void oled_print(char* string)
     {
+        if (strlen(string) > 0)
+        {
+            int str_length = strlen(string);
+            printf("%d\r\n", str_length);
+        }
         for (int i = 0; i < strlen(string); i++) // divide string into characters
         {
             // need choice for upper/lower case
+
             for (int j = 0; j < 7; j++)
             {
-                int print_byte = pgm_read_byte(&(font8[string[i]][j])) // fetch byte data from font.h, need choice for font size
-                oled_write_data[print_byte]
+                int print_byte = pgm_read_byte(&(font8[string[i]-32][j])); // fetch byte data from font.h, need choice for font size
+                oled_write_data(print_byte);
+                
             }
+            oled_write_data(0x00);
         }
     } 
 
