@@ -76,7 +76,7 @@ void oled_goto_pos(int line, int column)
     }
 
 
-void oled_print(char* string)
+void oled_print8(char* string)
     {
         if (strlen(string) > 0)
         {

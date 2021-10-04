@@ -17,6 +17,7 @@
 #include <oled.h>
 #include <ext.h>
 #include <string.h>
+#include <gui.h>
 
 
 
@@ -27,7 +28,7 @@ int main(void)
 	uart_init(9600);
 	
 	oled_reset();
-	oled_print("SEND NUDES");
+	oled_print8("SEND NUDES");
 	oled_goto_pos(1,0);
-	oled_print("Oled");
+	oled_print8("Oled");
 }
