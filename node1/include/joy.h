@@ -1,6 +1,7 @@
 #if !defined(JOY_H)
 #define JOY_H
 
+/* Direction struct */
 typedef enum {
     UP,
     DOWN,
@@ -8,8 +9,8 @@ typedef enum {
     RIGHT
 } dir_t;
 
-typedef struct
-{
+/* Joystick struct */
+typedef struct {
     int middle[2];
     int x_pos; // % Analog positions
     int y_pos;
