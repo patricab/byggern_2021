@@ -50,6 +50,12 @@ void oled_goto_column(int column);
 void oled_clear_line(int line);
 
 /**
+ * @brief Clear the pointer in OLED menu
+ * 
+ */
+void oled_clear_pointer(void);
+
+/**
  * @brief Set position to write on
  * 
  * @param line 

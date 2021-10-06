@@ -69,6 +69,16 @@ void oled_clear_line(int line)
         }
     }
 
+void oled_clear_pointer(void)
+    {
+        oled_home();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++){
+                oled_write_data(0x00);
+            }
+        }
+    }
+
 void oled_goto_pos(int line, int column)
     {
         oled_goto_line(line);
