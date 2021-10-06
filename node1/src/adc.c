@@ -36,31 +36,6 @@ void adc_read(char *data) {
     for (int i = 0; i < 4; i++)
     {
         data[i] = ext_read(ADC_ADDRESS, 0x00); // _RD strobe. Read ADC channel in sequence
-        if (i == 0)
-        {
-            int val = (int)data[i] - x_off;
-            
-            if (val < 0) { // Cut end regions off joystick range
-                val = 0;
-            } else if (val > 255)
-            {
-                val = 255;
-            }
-
-            data[i] = (char)val; // Set new data
-        } else if (i == 1)
-        {
-            int val = (int)data[i] - y_off;
-
-            if (val < 0) { // Cut end regions off joystick range
-                val = 0;
-            } else if (val > 255)
-            {
-                val = 255;
-            }
-
-            data[i] = (char)val;
-        }
     }
 }
 
