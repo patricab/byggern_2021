@@ -12,7 +12,8 @@
 #include <util/delay.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <adc_test.h>
+
+#include <test.h>
 #include <uart.h>
 #include <bit.h>
 #include <oled.h>
@@ -20,6 +21,15 @@
 #include <string.h>
 #include <gui.h>
 
+<<<<<<< HEAD
+=======
+int main(void)
+{
+	// adc_test();	
+	joy_test();
+
+	// ext_init();
+>>>>>>> joy
 
 
 int main(void)
