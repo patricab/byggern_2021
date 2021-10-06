@@ -2,7 +2,6 @@
 #include <ext.h>
 #include <sram.h>
 
-
 /**
  * @brief Write to external memory
  * 

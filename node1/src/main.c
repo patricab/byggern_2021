@@ -12,6 +12,7 @@
 #include <util/delay.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <adc_test.h>
 #include <uart.h>
 #include <bit.h>
 #include <oled.h>

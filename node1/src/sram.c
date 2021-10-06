@@ -6,7 +6,7 @@
 #include <sram.h>
 #include <ext.h>
 
-#define SRAM_ADDRESS 0x800
+#define SRAM_ADDRESS 0x1800
 
 /**
  * @brief Write to SRAM address
