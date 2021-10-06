@@ -73,9 +73,12 @@ void oled_clear_pointer(void)
     {
         oled_home();
         for (int i = 0; i < 8; i++) {
+            // Clear columns
             for (int j = 0; j < 8; j++){
                 oled_write_data(0x00);
             }
+            // Clear and go to next line
+            oled_goto_pos(i, 0);
         }
     }
 
@@ -91,7 +94,7 @@ void oled_print8(char* string)
         if (strlen(string) > 0)
         {
             int str_length = strlen(string);
-            printf("%d\r\n", str_length);
+            // printf("%d\r\n", str_length);
         }
         for (int i = 0; i < strlen(string); i++) // divide string into characters
         {

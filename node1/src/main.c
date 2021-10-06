@@ -1,10 +1,3 @@
-/*
- * Test_program.c
- *
- * Created: 01.09.2021 10:22:56
- * Author : andre
- */ 
-
 #define F_CPU 4915200
 #define __AVR_ATmega162__
 
@@ -13,33 +6,46 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <test.h>
 #include <uart.h>
 #include <bit.h>
 #include <oled.h>
+
 #include <ext.h>
+#include <adc.h>
 #include <string.h>
 #include <gui.h>
+#include <joy.h>
 
-<<<<<<< HEAD
-=======
+unsigned char d[4] = {0};
+joy_t joy;
+
 int main(void)
 {
-	// adc_test();	
-	joy_test();
-
+	/* Init functions */
 	// ext_init();
->>>>>>> joy
-
-
-int main(void)
-{
-	ext_init();
+	adc_init();
 	oled_init();
 	uart_init(9600);
-	
 	oled_reset();
-	oled_print8("SEND NUDES");
-	oled_goto_pos(1,0);
-	oled_print8("Oled");
+	gui_build();
+	
+	/* Calibrate joystick and find initial direction */
+	adc_read(d);
+    joy_analog(d, &joy);
+    joy_calibrate(d, &joy);
+	joy_dir(d, &joy);
+
+	while (1)
+	{
+		/* Get joystick direction */
+		adc_read(d);
+		joy_analog(d, &joy);
+		joy_dir(d, &joy);
+
+		/* Run state machine */
+		gui_run(&joy);
+	}
+	// oled_print8("SEND NUDES");
+	// oled_goto_pos(1,0);
+	// oled_print8("Oled");
 }
