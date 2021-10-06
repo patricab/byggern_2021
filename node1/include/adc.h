@@ -6,7 +6,7 @@
  * 
  * @param ret adc_t return struct
  */
-void adc_read(char *data);
+void adc_read(unsigned char *data);
 
 /**
  * @brief Initialize ADC

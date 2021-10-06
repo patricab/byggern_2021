@@ -27,7 +27,7 @@ static adc_calibrate(void) {
  * 
  * @param ret adc_t return struct
  */
-void adc_read(char *data) {
+void adc_read(unsigned char *data) {
     // Channel 0,1: Joystick
     // Channel 2, 3: Left slider, Right slider
 
