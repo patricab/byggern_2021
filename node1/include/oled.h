@@ -1,25 +1,23 @@
 #ifndef oled_H
 #define oled_H
 
-
 /**
- * @brief Oled init
- * 
+ * @brief Initialize OLED
  */
 
 void oled_init(void);
 
 /**
- * @brief Writes data to oled
+ * @brief Write to data section of OLED memory
  * 
- * @param data 
+ * @param data Data to be written
  */
 void oled_write_data(char data);
 
 /**
  * @brief Set line to start writing from
  * 
- * @param line 
+ * @param line Line position
  */
 void oled_goto_line(int line);
 
@@ -38,14 +36,14 @@ void oled_home(void);
 /**
  * @brief Set column to write on
  * 
- * @param column 
+ * @param column Column position
  */
 void oled_goto_column(int column);
 
 /**
  * @brief Set line to write on
  * 
- * @param line 
+ * @param line Line position
  */
 void oled_clear_line(int line);
 
@@ -58,18 +56,16 @@ void oled_clear_pointer(void);
 /**
  * @brief Set position to write on
  * 
- * @param line 
- * @param column 
+ * @param line Line position
+ * @param column Column position
  */
 void oled_goto_pos(int line, int column);
 
 /**
- * @brief Print string on oled
+ * @brief Print 8-bit wide string on OLED
  * 
- * @param string 
+ * @param string String to print
  */
 void oled_print8(char* string);
-
-
 
 #endif
