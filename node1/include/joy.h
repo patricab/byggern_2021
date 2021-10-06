@@ -3,10 +3,11 @@
 
 /* Direction struct */
 typedef enum {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
+    NEUTRAL, // 0
+    UP,      // 1
+    DOWN,    // 2
+    LEFT,    // 3
+    RIGHT    // 4
 } dir_t;
 
 /* Joystick struct */
@@ -23,7 +24,7 @@ typedef struct {
  * @param data Array with data from ADC
  * @param joy Target joystick struct
  */
-void joy_analog(char *data, joy_t *joy);
+void joy_analog(unsigned char *data, joy_t *joy);
 
 /**
  * @brief Find directon of joystick
@@ -32,7 +33,7 @@ void joy_analog(char *data, joy_t *joy);
  * @param data Array with data from ADC
  * @param joy Target joystick struct
  */
-void joy_dir(char *data, joy_t *joy);
+void joy_dir(unsigned char *data, joy_t *joy);
 
 /**
  * @brief Calibrate joystick
@@ -40,6 +41,6 @@ void joy_dir(char *data, joy_t *joy);
  * @param data Array with data from ADC
  * @param joy Target joystick struct
  */
-void joy_calibrate(char *data, joy_t *joy);
+void joy_calibrate(unsigned char *data, joy_t *joy);
 
 #endif // JOY_H
