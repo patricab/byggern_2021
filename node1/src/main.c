@@ -16,36 +16,25 @@
 #include <uart.h>
 #include <ext.h>
 #include <sram.h>
+#include <spi.h>
 
 int main(void)
 {
-	adc_test();	
 
 	// ext_init();
-
 	// sram_init();
-	// uart_init(9600);
-
-	// while (1)
-	// {
-	// 	// ext_write(0x1800, 0x00, 'B');
-	// 	sram_write(0x00, 'C');
-	// 	_delay_ms(100);
-	// 	// uart_tx(ext_read(0x1800, 0x00));
-	// 	uart_tx(sram_read(0x00));
-	// 	// volatile char *ext = 0x1800; // Set adress pointer
-	// 	// ext[0x00] = 'A';
-	// 	// _delay_ms(100);
-	// 	// uart_tx(ext[0x00]);
-	// }
+	uart_init(9600);
+	spi_init();
 
 	
-//     while (1) 
-//     {
-// 		PORTB |= (1 << PB1);
-// 		_delay_ms(500);
-		
-// 		PORTB &= (0 << PB1);
-// 		_delay_ms(500);
-//     }
+    while (1) 
+    {
+		spi_transmit('U');
+		_delay_ms(200);
+		char x = spi_read();
+		// printf("\r\n received:");
+		// printf(x);
+		_delay_ms(50);
+
+    }
 }
