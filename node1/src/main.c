@@ -17,6 +17,7 @@
 #include <ext.h>
 #include <sram.h>
 #include <spi.h>
+#include <can_controller.h>
 
 int main(void)
 {
@@ -24,17 +25,21 @@ int main(void)
 	// ext_init();
 	// sram_init();
 	uart_init(9600);
-	spi_init();
+	can_controller_init(); // also initialize SPI
+	uint8_t result;
 
 	
     while (1) 
     {
-		spi_transmit('U');
-		_delay_ms(200);
-		char x = spi_read();
-		// printf("\r\n received:");
-		// printf(x);
+		can_controller_write(0xA7, 0x45);
 		_delay_ms(50);
-
+		result = can_controller_read(0xA7);
+		_delay_ms(50);
+		uart_tx(result);
+		can_controller_write(0xA6, 0x53);
+		_delay_ms(50);
+		result = can_controller_read(0xA6);
+		uart_tx(result);
+		_delay_ms(50);
     }
 }

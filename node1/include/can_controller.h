@@ -120,7 +120,7 @@
 
 #define BTLMODE			0x80
 #define SAMPLE_1X       0x00
-#define SAMPLE_3X       0x40
+#define SAMPLE_3X       0x40x320
 
 
 // CNF3 Register Values
