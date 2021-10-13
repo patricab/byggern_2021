@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdarg.h>
-#include "../uart_and_printf/uart.h"
-#include "../uart_and_printf/printf-stdarg.h"
+#include "uart_and_printf/uart.h"
+#include "uart_and_printf/printf-stdarg.h"
 
-#include "../sam/sam3x/include/sam.h"
+#include "sam.h"
 #include <bit.h>
 
 
@@ -13,7 +13,7 @@ int main()
 
     WDT->WDT_MR = WDT_MR_WDDIS; //Disable Watchdog Timer
 
-    configure_uart();
+    // configure_uart();
 
     /* Enable PIO on bit PC2(D0) */
     set_bit(PIOC->PIO_PER, PIO_PC2);
