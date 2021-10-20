@@ -1,4 +1,4 @@
-#if !defined(JOY_H)
+#ifndef JOY_H
 #define JOY_H
 
 /* Direction struct */
@@ -42,5 +42,12 @@ void joy_dir(unsigned char *data, joy_t *joy);
  * @param joy Target joystick struct
  */
 void joy_calibrate(unsigned char *data, joy_t *joy);
+
+/**
+ * @brief Send joystick data on CAN buffer 0
+ * 
+ * @param joy Target joystick struct
+ */
+void joy_send(joy_t *joy);
 
 #endif // JOY_H

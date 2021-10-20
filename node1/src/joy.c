@@ -1,4 +1,5 @@
 #include <joy.h>
+#include <can_bus.h>
 
 /**
  * @brief Read analog position from joystick in percentage
@@ -46,4 +47,18 @@ void joy_calibrate(unsigned char *data, joy_t *joy) {
     /* Set middle position */
     joy->middle[0] = (data[1] * 100)/255;
     joy->middle[1] = (data[0] * 100)/255;
+}
+
+/**
+ * @brief Send joystick data on CAN buffer 0
+ * 
+ * @param joy Target joystick struct
+ */
+void joy_send(joy_t *joy) {
+    /* Initial configuration */
+    can_bus_init();
+    can_struct msg = {1, 2, {joy->x_pos, joy->y_pos}};
+
+    /* Transmit data */
+    can_transmit(&msg, 0);
 }
