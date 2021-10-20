@@ -16,36 +16,53 @@
 #include <uart.h>
 #include <ext.h>
 #include <sram.h>
+#include <spi.h>
+#include <can_controller.h>
+#include <can_bus.h>
 
 int main(void)
 {
-	adc_test();	
 
 	// ext_init();
-
 	// sram_init();
-	// uart_init(9600);
+	uart_init(9600);
+	can_bus_init(); // also initialize SPI
+	can_struct can_message0;
+	can_struct can_message1;
+	printf("New upload!\n\r");
 
-	// while (1)
-	// {
-	// 	// ext_write(0x1800, 0x00, 'B');
-	// 	sram_write(0x00, 'C');
-	// 	_delay_ms(100);
-	// 	// uart_tx(ext_read(0x1800, 0x00));
-	// 	uart_tx(sram_read(0x00));
-	// 	// volatile char *ext = 0x1800; // Set adress pointer
-	// 	// ext[0x00] = 'A';
-	// 	// _delay_ms(100);
-	// 	// uart_tx(ext[0x00]);
-	// }
+
 
 	
-//     while (1) 
-//     {
-// 		PORTB |= (1 << PB1);
-// 		_delay_ms(500);
-		
-// 		PORTB &= (0 << PB1);
-// 		_delay_ms(500);
-//     }
+    while (1) 
+    {
+		can_message0.id = 0x0;
+		can_message0.length = 4;
+		can_message0.data[0] = 'H';
+		can_message0.data[1] = 'e';
+		can_message0.data[2] = 'l';
+		can_message0.data[3] = 'l';
+
+		can_transmit(&can_message0, 0);
+	
+		_delay_ms(500);
+		can_struct message0 = can_receive(0);
+		_delay_ms(500);
+		printf("   Data: ");
+		for (int i = 0; i<4; i++){
+			uart_tx(message0.data[i]);
+		}
+
+		uint8_t value = can_controller_read(MCP_CANSTAT);
+		printf("   MCP status: ");
+		//uart_tx(value);
+		printf("%c (%x)", value, value);
+
+		printf("   Test: ");
+		uint8_t x = 'T';
+		uart_tx(x);
+		printf("x\n\r");
+		_delay_ms(500);
+
+	}
 }
