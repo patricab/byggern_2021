@@ -22,14 +22,14 @@
 
 int main(void)
 {
-
 	// ext_init();
 	// sram_init();
 	uart_init(9600);
+	printf("New upload!\n\r");
+
 	can_bus_init(); // also initialize SPI
 	can_struct can_message0;
 	can_struct can_message1;
-	printf("New upload!\n\r");
 
 
 
@@ -43,17 +43,19 @@ int main(void)
 		can_message0.data[2] = 'l';
 		can_message0.data[3] = 'l';
 
-		can_transmit(&can_message0, 0);
-	
-		_delay_ms(500);
-		can_struct message0 = can_receive(0);
-		_delay_ms(500);
-		printf("   Data: ");
-		for (int i = 0; i<4; i++){
-			uart_tx(message0.data[i]);
-		}
+		uint8_t buffer_0 = 0;
 
-		uint8_t value = can_controller_read(MCP_CANSTAT);
+		can_transmit(&can_message0, buffer_0);
+	
+		_delay_ms(1000);
+		// can_struct message0 = can_receive(buffer_0);
+		// _delay_ms(500);
+		// printf("   Data: ");
+		// for (int i = 0; i<4; i++){
+		// 	uart_tx(message0.data[i]);
+		// }
+
+		uint8_t value = can_controller_read(MCP_READ_STATUS);
 		printf("   MCP status: ");
 		//uart_tx(value);
 		printf("%c (%x)", value, value);
