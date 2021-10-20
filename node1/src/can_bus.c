@@ -6,12 +6,10 @@
 void can_bus_init()
     {
         can_controller_init();
-        // can_controller_bit_modify(MCP_CANCTRL, 0b11100000, MODE_NORMAL); //set normal mode
-        can_controller_bit_modify(MCP_CANCTRL, 0b11100000, MODE_LOOPBACK); //set LOOPBACK mode
-        
+        can_controller_bit_modify(MCP_CANCTRL, 0b11100000, MODE_NORMAL); //set normal mode       
         
         // INTERRUPT?
-        can_controller_write(MCP_CANINTE, MCP_RX_INT);
+        //can_controller_write(MCP_CANINTE, MCP_RX_INT);
     }
 
 void can_transmit(can_struct* can_message, uint8_t buffer_number)
@@ -42,7 +40,7 @@ void can_transmit(can_struct* can_message, uint8_t buffer_number)
             }
         }
         // Request to send from buffer
-        can_controller_rts(buffer_number); // RTS from buffer number 0
+        can_controller_rts(buffer_number); // RTS from buffer number
     }
 
 can_struct can_receive(uint8_t buffer_number)
