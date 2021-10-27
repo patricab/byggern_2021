@@ -4,7 +4,7 @@
 // #include "sam/sam3x/include/sam3x8e.h"
 // #include "sam/sam3x/include/component/component_pio.h"
 #include "sam.h"
-#include "uart_and_printf/uart.h"
+#include "uart.h"
 
 // #include <bit.h>
 
