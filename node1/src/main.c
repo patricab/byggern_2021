@@ -12,23 +12,22 @@
 #include <util/delay.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <adc_test.h>
-#include <uart.h>
-#include <ext.h>
-#include <sram.h>
-#include <spi.h>
-#include <can_controller.h>
-#include <can_bus.h>
+// #include <adc_test.h>
+// #include <uart.h>
+// #include <ext.h>
+// #include <sram.h>
+// #include <spi.h>
+// #include <can_controller.h>
+// #include <can_bus.h>
 
 int main(void)
 {
 	// ext_init();
 	// sram_init();
-	uart_init(9600);
-	printf("New upload!\n\r");
+	// uart_init(9600);
+	// printf("New upload!\n\r");
+	// joy_test();
 
-	can_bus_init(); // also initialize SPI
-	can_struct can_message0;
     while (1) 
     {
 	}

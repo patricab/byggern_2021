@@ -18,11 +18,11 @@ uint8_t can_controller_init()
         can_controller_bit_modify(MCP_CANCTRL, 0b11100000, MODE_CONFIG);
         // Self-test
         uint8_t value = can_controller_read(MCP_CANSTAT);
-        printf("   MCP status: ");
+        // printf("   MCP status: ");
 		//uart_tx(value);
-		printf("%c (%x)\n\r", value, value);
+		// printf("%c (%x)\n\r", value, value);
         if ((value & MODE_MASK) != MODE_CONFIG) {
-            printf ("MCP2515 is NOT in configuration mode after reset !\n\r");
+            // printf ("MCP2515 is NOT in configuration mode after reset !\n\r");
             return 1;
         }
         // More initialization
