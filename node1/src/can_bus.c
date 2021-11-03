@@ -6,19 +6,24 @@
 void can_bus_init()
     {
         can_controller_init();
-        can_controller_bit_modify(MCP_CANCTRL, 0b11100000, MODE_NORMAL); //set normal mode       
+        can_controller_bit_modify(MCP_CANCTRL, 0b11100000, MODE_CONFIG);
+        can_controller_bit_modify(MCP_CNF3, 0b11111111, 0b00000101); // Set bit timing
+        can_controller_bit_modify(MCP_CNF2, 0b11111111, 0b10110001);
+        can_controller_bit_modify(MCP_CNF1, 0b11111111, 0b00000011); // BRP
+
+        can_controller_bit_modify(MCP_CANCTRL, 0b11100000, MODE_ONESHOT); //Set mode
         
-        // INTERRUPT?
-        //can_controller_write(MCP_CANINTE, MCP_RX_INT);
+        // INTERRUPT! FIX!
+        // can_controller_write(MCP_CANINTE, MCP_RX_INT); // declare an interrupt for every message
     }
+
 
 void can_transmit(can_struct* can_message, uint8_t buffer_number)
     {
         // Make MINIMUM CAN-message in buffer 0
-        unsigned int id_full = can_message->id;
-        char id_high = id_full / 8;
-        char id_low = id_full % 8;
-        id_low = id_low*0b100000;
+        char id_high = can_message->id >> 3;
+        char id_low = can_message->id << 5;
+
         uint8_t data_length = can_message->length;
         char* data = can_message->data; // char pointer points at 1 byte
 
@@ -76,9 +81,6 @@ can_struct can_receive(uint8_t buffer_number)
                 can_message.data[i] = can_controller_read(MCP_RXB1D0+i);
             }
             can_controller_bit_modify(MCP_CANINTF, 0b00000010, 0b0); // reset receive flag
-
         }
-
-
         return can_message;
     }

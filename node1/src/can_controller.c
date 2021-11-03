@@ -2,6 +2,7 @@
 #include <can_controller.h>
 #include <spi.h>
 
+
 #define DD_SS PB4
 
 void can_controller_reset(void)
@@ -18,7 +19,7 @@ uint8_t can_controller_init()
         can_controller_bit_modify(MCP_CANCTRL, 0b11100000, MODE_CONFIG);
         // Self-test
         uint8_t value = can_controller_read(MCP_CANSTAT);
-        printf("   MCP status: ");
+        printf("   CAN status: ");
 		//uart_tx(value);
 		printf("%c (%x)\n\r", value, value);
         if ((value & MODE_MASK) != MODE_CONFIG) {
@@ -83,3 +84,16 @@ void can_controller_bit_modify(uint8_t address, uint8_t mask, uint8_t data)
         spi_transmit(data);
         PORTB |= (1<<DD_SS); // Deselect CAN - controller
     }
+
+uint8_t can_error(void){
+	uint8_t err = can_controller_read(MCP_EFLG);
+    return err;
+
+	// uint8_t mask = 0b00100000;
+	// if (mask & err == mask){
+	// 	printf("Error in CAN!\n");
+	// 	can_controller_bit_modify(MCP_CANINTF,mask,0);
+	// 	return 1;
+	// }
+	// return 0;
+}

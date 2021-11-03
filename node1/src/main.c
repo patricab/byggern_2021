@@ -24,12 +24,4 @@ int main(void)
 {
 	// ext_init();
 	// sram_init();
-	uart_init(9600);
-	printf("New upload!\n\r");
-
-	can_bus_init(); // also initialize SPI
-	can_struct can_message0;
-    while (1) 
-    {
-	}
 }
