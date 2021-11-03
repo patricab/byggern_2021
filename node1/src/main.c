@@ -29,42 +29,45 @@ int main(void)
 
 	can_bus_init(); // also initialize SPI
 	can_struct can_message0;
-	can_struct can_message1;
 
 
-
-	
     while (1) 
     {
-		can_message0.id = 0x0;
-		can_message0.length = 4;
+		can_message0.id = 1;
+		can_message0.length = 5;
 		can_message0.data[0] = 'H';
-		can_message0.data[1] = 'e';
-		can_message0.data[2] = 'l';
-		can_message0.data[3] = 'l';
+		can_message0.data[1] = 'E';
+		can_message0.data[2] = 'L';
+		can_message0.data[3] = 'L';
+		can_message0.data[4] = 'O';
 
 		uint8_t buffer_0 = 0;
 
+		can_controller_bit_modify(MCP_RXB0CTRL, 0b00001000, 0b00000000); // reset TXB0CTRL.TXREQ
 		can_transmit(&can_message0, buffer_0);
-	
-		_delay_ms(1000);
-		// can_struct message0 = can_receive(buffer_0);
-		// _delay_ms(500);
+		_delay_ms(50);
+
+
+		// can_struct message0 = can_receive(0);
+		// _delay_ms(50);
 		// printf("   Data: ");
-		// for (int i = 0; i<4; i++){
+		// for (int i = 0; i<5; i++){
 		// 	uart_tx(message0.data[i]);
 		// }
+		// printf("   ID: ");
+		// printf("%u", message0.id);
 
-		uint8_t value = can_controller_read(MCP_READ_STATUS);
+		// MCP STATUS
+		uint8_t status = can_controller_read(MCP_READ_STATUS);
 		printf("   MCP status: ");
-		//uart_tx(value);
-		printf("%c (%x)", value, value);
-
-		printf("   Test: ");
-		uint8_t x = 'T';
-		uart_tx(x);
-		printf("x\n\r");
-		_delay_ms(500);
-
+		printf("%c (%x)", status, status);
+		// CAN STATUS
+		uint8_t canstat = can_controller_read(MCP_CANSTAT);
+		printf("   CAN status: ");
+		printf("%c (%x)", canstat, canstat);
+		// CAN ERRROR
+		uint8_t error_check = can_error();
+		printf("   Errors: ");
+		printf("%x \n\r", error_check);
 	}
 }
