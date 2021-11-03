@@ -19,9 +19,19 @@
 #include <spi.h>
 #include <can_controller.h>
 #include <can_bus.h>
+#include <buttons.h>
 
 int main(void)
 {
 	// ext_init();
 	// sram_init();
+	uart_init(9600);
+	buttons_init();
+	printf("NEW UPLOAD\n\r");
+
+	while (1) {
+		int joy_but_pos = joy_but();
+		printf("%i\n\r", joy_but_pos);
+		_delay_ms(50);
+	}
 }
