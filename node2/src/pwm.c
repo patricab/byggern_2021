@@ -19,7 +19,7 @@ void pwm_init(void){
     REG_PWM_WPCR |= PWM_WPCR_WPRG0 | PWM_WPCR_WPRG2 | PWM_WPCR_WPRG3 | PWM_WPCR_WPCMD(0); //enable write protection 
     REG_PWM_CMR5 = PWM_CMR_CALG | PWM_CMR_CPRE_CLKA;      // Enable dual slope PWM and set the clock source as CLKA
     REG_PWM_CPRD5 = 20000;                                // Set the PWM frequency 2MHz/(2 * 20000) = 50Hz 
-    REG_PWM_CDTY5 = 1500;                                 // Set the PWM duty cycle to 1500 - centre the servo
+    REG_PWM_CDTY5 = 18500;                                 // Set the PWM duty cycle to 1500 - centre the servo
     REG_PWM_ENA = PWM_ENA_CHID5;                          // Enable the PWM channel     
     
     
@@ -31,8 +31,13 @@ void pwm_init(void){
 
 void pwm_run(int joystic){
     
-    //REG_PWM_CDTY0 = 1500;  
-    REG_PWM_CDTY0 = (900 + (joystic*4.6875));
+    //REG_PWM_CDTY5 = 1500;  
+    if ((joystic >= 0) && (joystic <=255)) {
+        REG_PWM_CDTY5 = (20000-(900 + (joystic*4.6875)));
+    }   else {
+        REG_PWM_CDTY5 = (20000-1500); 
+    }
+
 
 }
 

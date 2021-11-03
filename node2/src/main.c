@@ -32,6 +32,7 @@ int main()
     // const uint8_t c = 's';
     while (1)
     {
+        pwm_run(100);
         //(void)uart_putchar(c);
         
         // /* Toggle PC2(D0) */
