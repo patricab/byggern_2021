@@ -4,6 +4,9 @@
 // #include "sam/sam3x/include/sam3x8e.h"
 // #include "sam/sam3x/include/component/component_pio.h"
 #include "sam.h"
+#include "uart.h"
+#include <pwm.h>
+
 // #include <bit.h>
 
 
@@ -14,24 +17,32 @@ int main()
     WDT->WDT_MR = WDT_MR_WDDIS; //Disable Watchdog Timer
 
     // configure_uart();
+    pwm_init();
 
-    /* Enable PIO on bit PC2(D0) */
-    // set_bit(PIOC->PIO_PER, PIO_PC2);
-    PIOC->PIO_PER |= (1 << PIO_PC2);
-    /* Set peripheral A on PC2(D0) */
-    // clear_bit(PIOC->PIO_ABSR, PIO_PC2);
-    PIOC->PIO_ABSR |= (0 << PIO_PC2);
-    /* Set output enable on PC2(D0) */
-    // set_bit(PIOC->PIO_OER, PIO_PC2);
-    PIOC->PIO_OER |= (1 << PIO_PC2);
+    // /* Disable pull-up on bit PC2(D0) */
+    // PIOA->PIO_PUDR |= PIO_PA19;
+    // /* Enable PIO controller on bit PC2(D0) */
+    // PIOA->PIO_PER |= PIO_PA19;
+    // /* Set output enable on PC2(D0) */
+    // PIOA->PIO_OER |= PIO_PA19;
 
+    
+    
+    //const uint8_t c = 'a';
+    // const uint8_t c = 's';
     while (1)
     {
-        /* Toggle PC2(D0) */
-        PIOC->PIO_SODR |= (1 << PIO_PC2);
-        int i = 0;
-        while (i < 10000) {i++;}
-        PIOC->PIO_CODR |= (1 << PIO_PC2);
+        pwm_run(100);
+        //(void)uart_putchar(c);
+        
+        // /* Toggle PC2(D0) */
+        // int i = 0;
+        // while (i < 1000000) {i++;}
+        // PIOA->PIO_SODR |= PIO_PA19;
+        // i = 0;
+        // while (i < 1000000) {i++;}
+        // PIOA->PIO_CODR |= PIO_PA19;
+        //(void)uart_putchar(c);
     }
     
 }

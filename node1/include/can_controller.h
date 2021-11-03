@@ -212,4 +212,6 @@ uint8_t can_controller_read_status(void);
  */
 void can_controller_bit_modify(uint8_t address, uint8_t mask, uint8_t data);
 
+uint8_t can_error(void);
+
 #endif
