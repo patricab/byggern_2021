@@ -15,29 +15,25 @@ void delay(int ms) {
 
 void can_test(void) {
     /* Configure CAN baudrate register */
-    uint32_t can_br;
-    can_br |= (0 << 24); // Incoming bit stream sampled once
-    // can_br |= (41 << 16); // Baudrate prescaler = 41
-    can_br |= (23 << 16); // Baudrate prescaler = 41
-    can_br |= (1 << 12); // No re-synchronization jump width
-    can_br |= (2 << 8); // Propagation segment of 2xTQ
-    can_br |= (7 << 4); // Phase 1 at 7xTQ
-    can_br |= 6; // Phase 2 at 6xTQ
 
-    uint8_t ret = can_init_def_tx_rx_mb(can_br);
+    uint8_t ret = can_init_def_tx_rx_mb();
     if (ret > 0) {
         printf("Error: could not initialize CAN", 0);
     }
     
-    CAN_MESSAGE msg;
+    /* TX */
+    // CAN_MESSAGE msg;
+    // msg.id = 1;
+    // msg.data_length = 2;
+    // msg.data[0] = 'H';
+    // msg.data[1] = 'i';
 
+    /* RX */
     while (1)
     {
-        
-        // can_receive(&msg, 1);
-        CAN0_Handler();
+        can_receive(&msg, 0);
         printf("ID : %d\r\nLength: %d\r\nData: %s\r\n\n", msg.id, msg.data_length, msg.data);
-        // printf("ID : %d\r\nLength: %d\r\nData: %s", msg.id, msg.data_length, "Test");
+        
         // printf("Test", 0);
         delay(1000000);
     }

@@ -18,7 +18,7 @@ int main()
     WDT->WDT_MR = WDT_MR_WDDIS; //Disable Watchdog Timer
 
     configure_uart();
-    can_test();
+    // can_test();
 
     // /* Disable pull-up on bit PC2(D0) */
     // PIOA->PIO_PUDR |= PIO_PA19;

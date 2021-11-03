@@ -24,8 +24,15 @@
  *
  * \retval Success(0) or failure(1)
  */
-uint8_t can_init_def_tx_rx_mb(uint32_t can_br)
+uint8_t can_init_def_tx_rx_mb(void)
 {
+    uint32_t can_br;
+    can_br |= (0 << 24); // Incoming bit stream sampled once
+    can_br |= (41 << 16); // Baudrate prescaler = 41
+    can_br |= (1 << 12); // No re-synchronization jump width
+    can_br |= (1 << 8); // Propagation segment of 2xTQ
+    can_br |= (6 << 4); // Phase 1 at 7xTQ
+    can_br |= 5; // Phase 2 at 6xTQ
 	return can_init(can_br, 1, 2);
 }
 
