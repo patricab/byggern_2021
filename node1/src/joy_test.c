@@ -29,10 +29,8 @@ void joy_test(void)
 
     while (1)
     {
-        // ADC
+        // Read ADC and get joystick position/direction
         adc_read(data);
-        
-        // Joystick
         joy_analog(data, &joy);
         joy_dir(data, &joy);
 
