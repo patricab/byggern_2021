@@ -13,8 +13,8 @@ typedef enum {
 /* Joystick struct */
 typedef struct {
     int middle[2];
-    int x_pos; // % Analog positions
-    int y_pos;
+    unsigned char x_pos; // % Analog positions
+    unsigned char y_pos;
     dir_t dir;
 } joy_t;
 
