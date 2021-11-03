@@ -5,8 +5,8 @@
 // #include "sam/sam3x/include/component/component_pio.h"
 #include "sam.h"
 #include "uart.h"
-#include "printf-stdarg.h"
-#include <test.h>
+#include <pwm.h>
+#include <printf-stdarg.h>
 
 // #include <bit.h>
 
@@ -19,6 +19,8 @@ int main()
 
     configure_uart();
     // can_test();
+    // configure_uart();
+    // pwm_init();
 
     // /* Disable pull-up on bit PC2(D0) */
     // PIOA->PIO_PUDR |= PIO_PA19;
@@ -42,7 +44,7 @@ int main()
     //     while (i < 1000000) {i++;}
     //     PIOA->PIO_CODR |= PIO_PA19;
     //     // (void)uart_putchar(c);
-        printf("Test\r\n", 0);
+        // printf("Test\r\n", 0);
     }
     
 }
