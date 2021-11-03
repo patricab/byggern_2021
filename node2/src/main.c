@@ -5,7 +5,7 @@
 // #include "sam/sam3x/include/component/component_pio.h"
 #include "sam.h"
 #include "uart.h"
-#include "pwm.h"
+#include <pwm.h>
 
 // #include <bit.h>
 
