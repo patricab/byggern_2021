@@ -2,7 +2,7 @@ LDSCRIPT = sam/flash.ld
 BOOTUP = sam/sam3x/source/exceptions.c sam/sam3x/source/startup_sam3x.c sam/sam3x/source/system_sam3x.c
 MCUTYPE = __SAM3X8E__
 # List all source files to be compiled; separate with space
-SOURCE_FILES=$(BOOTUP) src/main.c uart_and_printf/uart.c uart_and_printf/printf-stdarg.c
+SOURCE_FILES=$(BOOTUP) src/main.c uart_and_printf/uart.c uart_and_printf/printf-stdarg.c src/pwm.c
 
 # Feel free to ignore anything below this line
 VPATH:= $(dir $(SOURCE_FILES))
@@ -18,7 +18,7 @@ ELF=$(BUILD_DIR)/main.elf
 
 LDFLAGS:= -T$(LDSCRIPT) -mthumb -mcpu=cortex-m3 -Wl,--gc-sections
 CFLAGS:= -mcpu=cortex-m3 -mthumb -g -std=c11 -MMD
-CFLAGS+= -I sam -I sam/sam3x/include -I sam/sam3x/source -I sam/cmsis -I sam/interrupt -I sam/sam3x/include/component -I sam/sam3x/include/instance -I sam/sam3x/include/pio -I . -I uart_and_printf/
+CFLAGS+= -I sam -I sam/sam3x/include -I sam/sam3x/source -I sam/cmsis -I sam/interrupt -I sam/sam3x/include/component -I sam/sam3x/include/instance -I sam/sam3x/include/pio -I . -I uart_and_printf/ -I include/
 CFLAGS+= -D $(MCUTYPE)
 
 .DEFAULT_GOAL := $(ELF)
