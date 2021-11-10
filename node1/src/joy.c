@@ -1,8 +1,10 @@
-#include <joy.h>
 #include <can_bus.h>
+#include <buttons.h>
+
+#include <joy.h>
 
 /**
- * @brief Read analog position from joystick in percentage
+ * @brief Read analog position from joystick in percentage, as well as button press
  * 
  * @param data Array with data from ADC
  * @param joy Target joystick struct
@@ -12,6 +14,8 @@ void joy_analog(unsigned char *data, joy_t *joy)
     // [x/y]/middle * 100%: Percent from middle position
     joy->x_pos = (unsigned char)((data[1] * 100) / 255);
     joy->y_pos = (unsigned char)((data[0] * 100) / 255);
+
+    joy->button = joy_but();
 }
 
 /**
@@ -70,11 +74,12 @@ void joy_send(joy_t *joy)
     can_bus_init();
     can_struct msg = {
         .id = 1, 
-        .length = 2, 
+        .length = 3, 
         .data[0] = joy->x_pos, 
-        .data[1] = joy->y_pos
+        .data[1] = joy->y_pos,
+        .data[2] = joy->button
     };
 
     /* Transmit data */
-    can_transmit(&msg, 1);
+    can_transmit(&msg, 0);
 }

@@ -15,6 +15,7 @@ typedef struct {
     int middle[2];
     unsigned char x_pos; // % Analog positions
     unsigned char y_pos;
+    int button;
     dir_t dir;
 } joy_t;
 

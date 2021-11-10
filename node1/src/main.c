@@ -25,7 +25,7 @@ int main(void)
 	volatile joy_t joy;
 	
 	/* Initialize libraries */
-	// uart_init(9600);
+	uart_init(9600);
     adc_init();
 	can_bus_init(); // also initialize SPI
 
@@ -44,6 +44,12 @@ int main(void)
         joy_dir(data, &joy);
 
         joy_send(&joy);
+
+        printf("Joystick pos: %d %d\r\n", joy.x_pos, joy.y_pos);
+        printf("Joystick dir: %u\r\n\n", joy.dir);
+        printf("Left PWM: %x\r\n", data[2]);
+        printf("Right PWM: %x\r\n\n", data[3]);
+        _delay_ms(200);
 	}
 
 	// uart_init(9600);
