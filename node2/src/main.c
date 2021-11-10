@@ -52,6 +52,7 @@ int main()
         // delay(1000000);
 
         pwm_run((int)msg.data[1]);
+        motor_run((int)msg.data[0]);
         
     }
     
