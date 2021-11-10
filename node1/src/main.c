@@ -1,10 +1,3 @@
-/*
- * Test_program.c
- *
- * Created: 01.09.2021 10:22:56
- * Author : andre
- */ 
-
 #define F_CPU 4915200
 #define __AVR_ATmega162__
 

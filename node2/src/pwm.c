@@ -21,26 +21,21 @@ void pwm_init(void){
     REG_PWM_CPRD5 = 20000;                                // Set the PWM frequency 2MHz/(2 * 20000) = 50Hz 
     REG_PWM_ENA = PWM_ENA_CHID5;                          // Enable the PWM channel     
     REG_PWM_CDTY5 = 18500;                                 // Set the PWM duty cycle to 1500 - centre the servo
-
-    
-    
-    
 }
+
 /**
  * @brief Set the pwm with so the servo can move. 
  * 
- * @param joystic, the input must be between 0 and 255, if not the servo is set to middle value 
+ * @param joy, the input must be between 0 and 255, if not the servo is set to middle value 
  */
 
 void pwm_run(int joystic){
     
-    if ((joystic >= 0) && (joystic <=255)) {
-        REG_PWM_CDTY5 = (20000-(900 + (joystic*4.6875)));
+    if ((joystic >= 0) && (joystic <=100)) {
+        REG_PWM_CDTY5 = (20000-(900 + (joystic*12)));
     }   else {
         REG_PWM_CDTY5 = (20000-1500); 
     }
-
-
 }
 
 
