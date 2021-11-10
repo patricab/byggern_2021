@@ -14,6 +14,7 @@
 #include <adc.h>
 #include <joy.h>
 #include <can_bus.h>
+#include <buttons.h>
 
 #include <test.h>
 
@@ -44,4 +45,13 @@ int main(void)
 
         joy_send(&joy);
 	}
+
+	// uart_init(9600);
+	// printf("NEW UPLOAD\n\r");
+
+	// while (1) {
+	// 	int joy_but_pos = joy_but();
+	// 	printf("%i\n\r", joy_but_pos);
+	// 	_delay_ms(50);
+
 }
