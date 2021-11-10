@@ -7,6 +7,11 @@
 #include <printf-stdarg.h>
 #include <can_controller.h>
 
+void delay(int ms) {
+   int i = 0;
+   while (i < ms){i++;}
+}
+
 int main()
 {
     SystemInit();
@@ -16,7 +21,11 @@ int main()
     /* Initialize libraries */
     configure_uart();
     pwm_init();
-    can_init_def_tx_rx_mb();
+
+    uint8_t ret = can_init_def_tx_rx_mb();
+    if (ret > 0) {
+        printf("Error: could not initialize CAN", 0);
+    }
 
     // /* Disable pull-up on bit PC2(D0) */
     // PIOA->PIO_PUDR |= PIO_PA19;
@@ -39,6 +48,9 @@ int main()
         
         /* Recieve can data and send to servo */
         can_receive(&msg, 0);
+        // printf("ID : %d\r\nLength: %d\r\nData: %x %x\r\n\n", msg.id, msg.data_length, msg.data[0], msg.data[1]);
+        // delay(1000000);
+
         pwm_run((int)msg.data);
         
     }
