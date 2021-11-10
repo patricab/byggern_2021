@@ -1,10 +1,3 @@
-/*
- * Test_program.c
- *
- * Created: 01.09.2021 10:22:56
- * Author : andre
- */ 
-
 #ifndef F_CPU
 #define F_CPU 4915200
 #endif

@@ -20,6 +20,7 @@ uint8_t can_controller_init()
         // Self-test
         uint8_t value = can_controller_read(MCP_CANSTAT);
         // printf("   CAN status: ");
+        // printf("   MCP status: ");
 		//uart_tx(value);
 		// printf("%c (%x)\n\r", value, value);
         if ((value & MODE_MASK) != MODE_CONFIG) {
