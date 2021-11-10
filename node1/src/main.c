@@ -12,13 +12,13 @@
 #include <util/delay.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <adc_test.h>
-#include <uart.h>
-#include <ext.h>
-#include <sram.h>
-#include <spi.h>
-#include <can_controller.h>
-#include <can_bus.h>
+// #include <adc_test.h>
+// #include <uart.h>
+// #include <ext.h>
+// #include <sram.h>
+// #include <spi.h>
+// #include <can_controller.h>
+// #include <can_bus.h>
 
 int main(void)
 {
