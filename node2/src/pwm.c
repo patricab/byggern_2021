@@ -28,9 +28,11 @@ void pwm_init(void){
  * 
  * @param joy, the input must be between 0 and 255, if not the servo is set to middle value 
  */
-void pwm_run(int joy){
-    if ((joy >= 0) && (joy <=255)) {
-        REG_PWM_CDTY5 = (20000-(900 + (joy*4.6875)));
+
+void pwm_run(int joystic){
+    
+    if ((joystic >= 0) && (joystic <=100)) {
+        REG_PWM_CDTY5 = (20000-(900 + (joystic*12)));
     }   else {
         REG_PWM_CDTY5 = (20000-1500); 
     }
