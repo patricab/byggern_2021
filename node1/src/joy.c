@@ -68,7 +68,12 @@ void joy_send(joy_t *joy)
 {
     /* Initial configuration */
     can_bus_init();
-    can_struct msg = {1, 2, {joy->x_pos, joy->y_pos}};
+    can_struct msg = {
+        .id = 1, 
+        .length = 2, 
+        .data[0] = joy->x_pos, 
+        .data[1] = joy->y_pos
+    };
 
     /* Transmit data */
     can_transmit(&msg, 1);

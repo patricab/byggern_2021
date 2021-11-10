@@ -34,6 +34,7 @@ void joy_test(void)
         joy_analog(data, &joy);
         joy_dir(data, &joy);
 
+        joy_send(&joy);
         // 0,1: Joystick
         // 2, 3: L, R
         // printf("%d %d\r\n", data[0], data[1]);

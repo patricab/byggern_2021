@@ -22,6 +22,8 @@
 #include <joy.h>
 #include <can_bus.h>
 
+#include <test.h>
+
 int main(void)
 {
 	/* Declare variables */
@@ -47,8 +49,6 @@ int main(void)
         joy_analog(data, &joy);
         joy_dir(data, &joy);
 
-		// unsigned char can_data[2] = {joy.x_pos, joy.y_pos};
-		can_struct msg0 = {1, 2, {joy.x_pos, joy.y_pos}};
-		can_transmit(&msg0, 0);
+        joy_send(&joy);
 	}
 }
