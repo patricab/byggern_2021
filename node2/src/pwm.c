@@ -34,8 +34,8 @@ void pwm_init(void){
 
 void pwm_run(int joystic){
     
-    if ((joystic >= 0) && (joystic <=255)) {
-        REG_PWM_CDTY5 = (20000-(900 + (joystic*4.6875)));
+    if ((joystic >= 0) && (joystic <=100)) {
+        REG_PWM_CDTY5 = (20000-(900 + (joystic*12)));
     }   else {
         REG_PWM_CDTY5 = (20000-1500); 
     }
