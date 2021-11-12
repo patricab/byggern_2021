@@ -11,6 +11,7 @@ void motor_controller_init();
 void motor_enable();
 void motor_disable();
 void motor_run(int joy_pos);
+int16_t motor_encoder_read(void);
 
 
 #endif
