@@ -64,3 +64,24 @@ bool ir_on(unsigned char data) {
         return false;
     }
 }
+
+#define num_readings 5
+// unsigned char num_readings = 5;
+unsigned char array[num_readings];
+uint8_t index = 0;
+unsigned char total = 0;
+
+unsigned char IR_average_filter(void) {
+	total = total - array[index];
+	array[index] = adc_read();
+	total = total + array[index];
+	index = index + 1;
+	if (index >= num_readings) {
+		index = 0;
+	}
+	unsigned char average = total / num_readings;
+	return average;
+}
+
+
+
