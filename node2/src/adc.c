@@ -56,6 +56,11 @@ unsigned char adc_read(void) {
  * @return true IR blocked
  * @return false IR not blocked
  */
-bool ir_on(unsigned char *data) {
-   return false; 
+bool ir_on(unsigned char data) {
+   if(data < 100){
+        return true;
+    }
+    else{
+        return false;
+    }
 }

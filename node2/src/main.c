@@ -35,6 +35,11 @@ int main()
     // PIOA->PIO_PER |= PIO_PA19;
     // /* Set output enable on PC2(D0) */
     // PIOA->PIO_OER |= PIO_PA19;
+
+   
+
+
+
     
     // CAN_MESSAGE msg;
     while (1)
@@ -55,6 +60,9 @@ int main()
 
         // pwm_run((int)msg.data[1]);
         printf("%d\r\n", adc_read()); 
+        // REG_PIOA_PDSR;
+
+       
         
     }
 }
