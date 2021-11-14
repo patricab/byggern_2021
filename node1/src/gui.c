@@ -11,6 +11,7 @@
 #include <uart.h>
 
 state_t state;
+
  
 static state_t state_1() {
     oled_clear_pointer();   
@@ -34,16 +35,19 @@ static state_t state_4(){
     oled_clear_pointer();
     oled_goto_pos(6,0);
     oled_print8("*");
-
-
 }
+
+
  
 static state_t (*state_functions[4])() = {
     state_1,
     state_2,
     state_3,
     state_4,
+    
+    
 };
+ 
  
 /**
  * @brief Run GUI state machine
@@ -54,18 +58,28 @@ static state_t (*state_functions[4])() = {
 void gui_run(joy_t *joy){
         
     /* Change state based on joystick direction */
-    if (joy->dir == DOWN) {
+    if (joy->dir == DOWN) { //only works in menu
         state++;
     } else if (joy->dir == UP) {
         state--;
     }
     if (joy->dir == RIGHT) { // Select shit
-        oled_reset();
-        oled_goto_pos(0, 12);
-        oled_print8("Send nudes");
+        if (state == state_1){
+            choice1_build();
+        } 
+        else if(state == state_2){
+            choice2_build();
+        } 
+        else if(state == state_3){
+            game_gui_run();
+            //clear pointer
+        }
+    }
+    if (joy->dir == LEFT) { // Select shit
+        menu_build();
     }
 
-    /* Loop state on boundary condition */
+       /* Loop state on boundary condition */
     if (state == STATE_4 + 1){
         state = STATE_1;
     }
@@ -81,11 +95,12 @@ void gui_run(joy_t *joy){
 /**
  * @brief Build OLED GUI menu
  */
-void gui_build(void)
+void menu_build(void)
 {
     // Start in state 1
     state = STATE_1; 
 
+    oled_reset();
     /* Build standard menu */
     oled_goto_pos(0, 15);
     oled_print8("Valg 1");
@@ -95,4 +110,39 @@ void gui_build(void)
     oled_print8("Valg 3");
     oled_goto_pos(6, 15);
     oled_print8("Valg 4");
+}
+
+void choice1_build(void){
+    state = STATE_1;
+
+    oled_reset();   
+    oled_goto_pos(0, 15);
+    oled_print8("Menu1 1");
+    oled_goto_pos(2, 15);
+    oled_print8("Menu1 2");
+    oled_goto_pos(4, 15);
+    oled_print8("Menu1 3");
+    oled_goto_pos(6, 15);
+    oled_print8("Menu1 4");
+}
+void choice2_build(void){
+    state = STATE_1;
+
+    oled_reset();
+    oled_goto_pos(0, 15);
+    oled_print8("Menu2 1");
+    oled_goto_pos(2, 15);
+    oled_print8("Menu2 2");
+    oled_goto_pos(4, 15);
+    oled_print8("Menu2 3");
+    oled_goto_pos(6, 15);
+    oled_print8("Menu2 4");
+}
+
+void game_gui_run(void){
+
+    oled_reset();
+    oled_goto_pos(0, 0);
+    oled_print8("Game is running")
+
 }

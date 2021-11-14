@@ -21,6 +21,10 @@ void gui_run(joy_t *joy);
 /**
  * @brief Build OLED GUI menu
  */
-void gui_build(void);
+void menu_build(void);
+
+void game_gui_run(void);
+void choice1_build(void);
+void choice2_build(void);
 
 #endif
