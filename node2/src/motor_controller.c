@@ -30,14 +30,14 @@ void motor_disable() {
 }
 
 void motor_run(int joy_pos) {
-    uint16_t u;
-    if ((joy_pos >= 0) && (joy_pos <= 49)){
+    int u;
+    if ((joy_pos >= 0) && (joy_pos <= 30)){
       PIOD->PIO_CODR |= DIR;
-      u = joy_pos*40;
+      u = 2000 - joy_pos*40;
     }
-    else if ((joy_pos >= 51) && (joy_pos <= 100)){
+    else if ((joy_pos >= 70) && (joy_pos <= 100)){
       PIOD->PIO_SODR |= DIR;
-      u = joy_pos*40;
+      u = (joy_pos - 70)*40;
     }
     dac_conversion(u);
 }

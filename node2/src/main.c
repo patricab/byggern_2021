@@ -3,6 +3,8 @@
 
 #include "sam.h"
 #include "uart.h"
+#include <motor_controller.h>
+#include <dac.h>
 #include <pwm.h>
 #include <printf-stdarg.h>
 #include <can_controller.h>
@@ -21,6 +23,9 @@ int main()
     /* Initialize libraries */
     configure_uart();
     pwm_init();
+    motor_controller_init();
+    motor_enable();
+    dac_init();
 
     uint8_t ret = can_init_def_tx_rx_mb();
     if (ret > 0) {
@@ -37,13 +42,13 @@ int main()
     CAN_MESSAGE msg;
     while (1)
     {
-    //     /* Toggle PC2(D0) */
-    //     int i = 0;
-    //     while (i < 1000000) {i++;}
-    //     PIOA->PIO_SODR |= PIO_PA19;
-    //     i = 0;
-    //     while (i < 1000000) {i++;}
-    //     PIOA->PIO_CODR |= PIO_PA19;
+        // /* Toggle PC2(D0) */
+        // int i = 0;
+        // while (i < 1000000) {i++;}
+        // PIOA->PIO_SODR |= PIO_PA19;
+        // i = 0;
+        // while (i < 1000000) {i++;}
+        // PIOA->PIO_CODR |= PIO_PA19;
         // printf("Test\r\n", 0);
         
         /* Recieve can data and send to servo */
@@ -53,7 +58,6 @@ int main()
 
         pwm_run((int)msg.data[1]);
         motor_run((int)msg.data[0]);
-        
-    }
-    
+        //printf("%d\r\n", (int)msg.data[0]);
+    }   
 }
