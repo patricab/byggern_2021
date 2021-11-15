@@ -45,11 +45,11 @@ int main(void)
 
         joy_send(&joy);
 
-        printf("Joystick pos: %d %d\r\n", joy.x_pos, joy.y_pos);
-        printf("Joystick dir: %u\r\n\n", joy.dir);
-        printf("Left PWM: %x\r\n", data[2]);
-        printf("Right PWM: %x\r\n\n", data[3]);
-        _delay_ms(200);
+        // printf("Joystick pos: %d %d\r\n", joy.x_pos, joy.y_pos);
+        // printf("Joystick dir: %u\r\n\n", joy.dir);
+        // printf("Left PWM: %x\r\n", data[2]);
+        // printf("Right PWM: %x\r\n\n", data[3]);
+        // _delay_ms(200);
 	}
 
 	// uart_init(9600);
