@@ -16,7 +16,7 @@ typedef enum {
  * @param state state_t State enum
  * @param joy Target joystick structure
  */
-void gui_run(joy_t *joy);
+_Bool gui_run(joy_t *joy);
 
 /**
  * @brief Build OLED GUI menu

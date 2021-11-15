@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <util/delay.h>
+#include <avr/io.h>
 
 #include <gui.h>
 #include <oled.h>
@@ -55,7 +56,7 @@ static state_t (*state_functions[4])() = {
  * @param state state_t State enum
  * @param joy Target joystick structure
  */
-void gui_run(joy_t *joy){
+_Bool gui_run(joy_t *joy){
         
     /* Change state based on joystick direction */
     if (joy->dir == DOWN) { //only works in menu
@@ -64,19 +65,24 @@ void gui_run(joy_t *joy){
         state--;
     }
     if (joy->dir == RIGHT) { // Select shit
-        if (state == state_1){
-            choice1_build();
+        if (state == STATE_1){
+            game_gui_run();
+            return 1;
+
+            //start spill
+            //fjern pointer
+            
         } 
-        else if(state == state_2){
+        else if(state == STATE_2){
             choice2_build();
         } 
-        else if(state == state_3){
-            game_gui_run();
-            //clear pointer
+        else if(state == STATE_3){
+            choice1_build();
         }
     }
     if (joy->dir == LEFT) { // Select shit
         menu_build();
+        return 0;
     }
 
        /* Loop state on boundary condition */
@@ -89,7 +95,7 @@ void gui_run(joy_t *joy){
 
     (*state_functions[state])(); // Run state
 
-    _delay_ms(100);
+    _delay_ms(10);
 }
 
 /**
@@ -103,7 +109,7 @@ void menu_build(void)
     oled_reset();
     /* Build standard menu */
     oled_goto_pos(0, 15);
-    oled_print8("Valg 1");
+    oled_print8("Start spill");
     oled_goto_pos(2, 15);
     oled_print8("Valg 2");
     oled_goto_pos(4, 15);
@@ -142,7 +148,8 @@ void choice2_build(void){
 void game_gui_run(void){
 
     oled_reset();
-    oled_goto_pos(0, 0);
-    oled_print8("Game is running")
+    oled_goto_pos(0, 15);
+    oled_print8("Game running");
 
 }
+
