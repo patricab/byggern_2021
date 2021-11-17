@@ -14,19 +14,7 @@ unsigned char IR_average_filter(void);
  */
 int adc_init(void) {
     /* Setup for ADC mode register */
-    //REG_ADC_MR &= ~ADC_MR_TRGEN; // Disable hardware triggers
-    // REG_ADC_MR |= ADC_MR_LOWRES_BITS_12; // Set 12-bit resolution
-    // REG_ADC_MR |= ADC_MR_SLEEP_NORMAL; // Set ADC to normal mode
-    // REG_ADC_MR |= ADC_MR_FWUP_OFF; // Set normal sleep mode
-    // REG_ADC_MR |= ADC_MR_FREERUN_ON; // Enable Free Run Mode
-    // REG_ADC_MR |= ADC_MR_PRESCAL(41); // Set prescaler to 41 => 1MHz ADC clock
-    // REG_ADC_MR |= ADC_MR_STARTUP_SUT8; // Set startup time to 8 periods
-    // REG_ADC_MR |= ADC_MR_ANACH_NONE; // Turn off Analog Change
-    // REG_ADC_MR |= ADC_MR_TRACKTIM(4); // Set tracking time
-    // REG_ADC_MR |= ADC_MR_TRANSFER(1); // Set transfer period
-    // REG_ADC_MR |= ADC_MR_USEQ_NUM_ORDER; // Set Use sequence to normal mode
     REG_PMC_PCER1 |= PMC_PCER1_PID37; // enable clock for ADC
-    //NVIC_EnableIRQ(ADC_IRQn); // enable ADC interrupts
     REG_ADC_MR |= ADC_MR_FREERUN;
     REG_ADC_CHER |= ADC_CHER_CH0; // enable adc for channel 0 (A7?)
 
@@ -45,15 +33,6 @@ int adc_init(void) {
  * @return unsigned char Last converted data
  */
 unsigned char adc_read(void) {
-//    /* Start conversion */ 
-//    REG_ADC_CR |= (1 << ADC_CR_START);
-
-//    /* Wait until CH0 conversion is finished */
-//    while (!(REG_ADC_ISR & (1 << ADC_ISR_EOC0)))
-//    {
-//        /* Return last converted data */
-//        return (REG_ADC_LCDR & 0x7FF);
-//    }
     REG_ADC_CR |= ADC_CR_START; // start conversion
     
     while(!(REG_ADC_ISR));
@@ -72,7 +51,7 @@ int ir_on(void) {
     // unsigned char data = IR_average_filter();
     unsigned char data = adc_read();
     
-    if(data < 100){
+    if(data < 30){
         return 1;
     }
     else {

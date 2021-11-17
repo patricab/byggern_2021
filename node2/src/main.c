@@ -43,6 +43,7 @@ int main()
         .data_length = 1
     };
     
+    int i;
     while (1)
     {
     //     /* Toggle PC2(D0) */
@@ -65,8 +66,10 @@ int main()
         // printf("%d\r\n", (int)adc_read());
         // printf("%d\r\n", (int)IR_average_filter());
         printf("%d\r\n", on);
+        i = 0;
+        while (i < 100000) {i++;}
 
-        pwm_run((int)rx.data[0]);
-        run_solonoid((int)rx.data[2]);
+        // pwm_run((int)rx.data[0]);
+        // run_solonoid((int)rx.data[2]);
     }
 }
