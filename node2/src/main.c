@@ -32,12 +32,12 @@ int main()
         printf("Error: could not initialize CAN", 0);
     }
 
-    // /* Disable pull-up on bit PC2(D0) */
-    // PIOA->PIO_PUDR |= PIO_PA19;
-    // /* Enable PIO controller on bit PC2(D0) */
-    // PIOA->PIO_PER |= PIO_PA19;
-    // /* Set output enable on PC2(D0) */
-    // PIOA->PIO_OER |= PIO_PA19;
+    /* Disable pull-up on bit PC2(D0) */
+    PIOA->PIO_PUDR |= PIO_PA19;
+    /* Enable PIO controller on bit PC2(D0) */
+    PIOA->PIO_PER |= PIO_PA19;
+    /* Set output enable on PC2(D0) */
+    PIOA->PIO_OER |= PIO_PA19;
     
     CAN_MESSAGE msg;
     while (1)

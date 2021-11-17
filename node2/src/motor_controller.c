@@ -108,3 +108,36 @@ void pid_controller(void) { // INTERRUPT, AND REFERENCE
     uI[1] = uI[0];
     uD[1] = uD[0];
 }
+
+void tc_setup() {
+
+  PMC->PMC_PCER1 |= PMC_PCER1_PID35;  // TC8 power ON : Enable pheriferal clock
+
+  //PIOD->PIO_PDR |= PIO_PDR_P7;                            // Set the pin to the peripheral
+  //PIOD->PIO_ABSR |= PIO_PD7B_TIOA8;                       // Peripheral type B
+
+  TC2->TC_CHANNEL[2].TC_CMR = TC_CMR_TCCLKS_TIMER_CLOCK4  // MCK/2 = 42 M Hz, clk on rising edge
+                              | TC_CMR_WAVE               // Waveform mode
+                              | TC_CMR_WAVSEL_UP_RC;       // UP mode with automatic trigger on RC Compare
+  //  | TC_CMR_ACPA_CLEAR         // Clear TIOA2 on RA compare match
+  //  | TC_CMR_ACPC_SET;          // Set TIOA2 on RC compare match
+
+
+  TC2->TC_CHANNEL[2].TC_RC = 656;  //<*********************  Frequency = (Mck/2)/TC_RC  Hz
+
+
+  TC2->TC_CHANNEL[2].TC_IER = TC_IER_CPCS;
+  NVIC_EnableIRQ(TC8_IRQn);
+  TC2->TC_CHANNEL[2].TC_CCR = TC_CCR_SWTRG | TC_CCR_CLKEN; // Software trigger TC2 counter and enable
+}
+
+void TC8_Handler() {
+
+  static uint32_t Count;
+
+  TC2->TC_CHANNEL[2].TC_SR;                               // Read and clear status register
+  if (Count++ == 1000) {
+    Count = 0;
+    PIOA->PIO_ODSR ^= PIO_ODSR_P19;                      // Toggle LED every 1 Hz
+  }
+}
