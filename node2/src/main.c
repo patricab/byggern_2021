@@ -47,7 +47,6 @@ int main()
     //     i = 0;
     //     while (i < 1000000) {i++;}
     //     PIOA->PIO_CODR |= PIO_PA19;
-        // printf("Test\r\n", 0);
         
         /* Recieve can data and send to servo */
         can_receive(&msg, 0);
