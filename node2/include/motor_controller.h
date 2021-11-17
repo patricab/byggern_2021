@@ -45,7 +45,7 @@ int16_t motor_encoder_read(void);
  * @brief Reset motor encoder
  * 
  */
-void motor_encoder_reset(void);
+void motor_encoder_reset();
 
 /**
  * @brief Calibrate motro encoder

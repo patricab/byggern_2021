@@ -26,8 +26,14 @@ int main()
     motor_controller_init();
     motor_enable();
     dac_init();
-    //tc_setup();
+    tc_setup();
     //motor_encoder_calib();
+
+    //motor_encoder_reset();
+    // // Function motor_encoder_reset() does not work
+    PIOD->PIO_CODR |= NOT_RST;
+    printf(" \n\r"); // wait
+    PIOD->PIO_SODR |= NOT_RST;
 
     uint8_t ret = can_init_def_tx_rx_mb();
     if (ret > 0) {
@@ -48,23 +54,13 @@ int main()
     
     while (1)
     {
-        // /* Toggle PC2(D0) */
-        // int i = 0;
-        // while (i < 1000000) {i++;}
-        // PIOA->PIO_SODR |= PIO_PA19;
-        // i = 0;
-        // while (i < 1000000) {i++;}
-        // PIOA->PIO_CODR |= PIO_PA19;
-        // printf("Test\r\n", 0);
-        // PIOA->PIO_ODSR ^= PIO_PA19;                      // Toggle LED every 1 Hz        
-        // i = 0;
-        // while (i < 1000000) {i++;}
-        /* Recieve can data and send to servo */
+
         can_receive(&msg, 0);
         // printf("ID : %d\r\nLength: %d\r\nData: %x %x\r\n\n", msg.id, msg.data_length, msg.data[0], msg.data[1]);
         // delay(1000000);
         update_ref((int16_t)msg.data[3]);
-        printf("%d\n\r", msg.data[0]);
+        pid_controller();
+        //printf("%d\n\r", msg.data[3]);
         pwm_run((int)msg.data[0]);
         // int16_t value = motor_encoder_read();
         // printf("%d\n\r", value);

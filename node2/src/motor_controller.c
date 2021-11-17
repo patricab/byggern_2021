@@ -5,25 +5,28 @@
 #include "dac.h"
 #include "uart.h"
 
+// global flags
+volatile int flag = 0;
+
 // PID constants
-#define Kp 0.1
-#define Ti 1
-#define Td 1
-#define N 10
-#define T 0.001 // Time between runs
-const int16_t alpha = T / Ti;
-const int16_t beta = Td / (Td+T*N);
+# define Kp 1
+# define Ti 10.0
+# define Td 0.0
+# define N 10
+# define T 0.01/1000.0 // Time between runs in microsec
+const float alpha = T / Ti;
+const float beta = Td / (Td+T*N);
 
 // Reference
 volatile int16_t ref = 0;
 
 // Keep track of measurements and error
-volatile int16_t rot[2] = {0, 0}; // rot[k], rot[k-1]
-volatile int16_t error[2] = {0, 0}; // error[k], error[k-1]
+volatile float rot[2] = {0, 0}; // rot[k], rot[k-1]
+volatile float error[2] = {0, 0}; // error[k], error[k-1]
 // Keep track of u
-volatile int16_t uP = 0;
-volatile int16_t uI[2] = {0, 0};
-volatile int16_t uD[2] = {0, 0};
+volatile float uP = 0;
+volatile float uI[2] = {0, 0};
+volatile float uD[2] = {0, 0};
 
 
 void motor_controller_init() {
@@ -40,7 +43,7 @@ void motor_controller_init() {
     /* Set output enabl for MJ1*/
     PIOD->PIO_OER |= (EN | DIR | SEL | NOT_OE | NOT_RST);
     REG_PIOC_PUDR |= (PIO_ODR_P1 | PIO_ODR_P2 | PIO_ODR_P3 | PIO_ODR_P4 | PIO_ODR_P5 | PIO_ODR_P6 | PIO_ODR_P7 | PIO_ODR_P8); 
-    motor_encoder_reset();
+    //motor_encoder_reset();
 }
 
 void motor_enable() {
@@ -84,7 +87,7 @@ int16_t motor_encoder_read(void) {
     return encoder_value;
 }
 
-void motor_encoder_reset(void) {
+void motor_encoder_reset() {
     PIOD->PIO_CODR |= NOT_RST;
     printf(" \n\r"); // wait
     PIOD->PIO_SODR |= NOT_RST;
@@ -106,33 +109,40 @@ void motor_encoder_calib(void) {
     update_ref(0);
 }
 
-void pid_controller(void) { //  REFERENCE
-    //TC2->TC_CHANNEL[2].TC_SR;   //  INTERRUPT! Read and clear status register
+void pid_controller(void) {
+    if (flag == 1){
 
     // Scale reference
-    ref = ref*63;
+    ref = ref*36;
+    float ref_float = (float)ref;
 
     // Read position (pos)
-    rot[0] = motor_encoder_read();
+    int16_t rot_value = motor_encoder_read();
+    rot[0] = (float) rot_value;
     // Reference as global
 
     // Compute error signal
-    error[0] = ref - rot[0]; // Calibration is necessary prior
+    error[0] = (8000.0 - ref_float) - rot[0]; // Calibration is necessary prior
+    // printf("%d\n\r", (int)(8000 - ref));
+    // printf("%d\n\r", (int)rot[0]);
+    // printf("%d\n\r", (int)error[0]);
 
     // Compute controller gain (position gain)
-    uP = Kp * error[0];
+    uP = Kp * abs(error[0]);
     uI[0] = uI[1] + (Kp*alpha*error[0]);
     uD[0] = beta + uD[1] - (Kp*(Td/T)*(1-beta)*(rot[0]-rot[1]));
     int16_t u = uP + uI[0] + uD[0];
 
     // SET MOTOR DIRECTION AND SEND U TO DAC
-    if (error > 0) {
+    if (error[0] > 0.0) {
         PIOD->PIO_CODR |= DIR; // Set direction left
+        // printf("L\n\r");
         dac_conversion(u);
     }
-    else if (error < 0) {
+    else if (error[0] < 0.0) {
         PIOD->PIO_SODR |= DIR; // Set direction rigth
         dac_conversion(u);
+        // printf("R\n\r");
     }
 
     // Update previous signals
@@ -140,6 +150,8 @@ void pid_controller(void) { //  REFERENCE
     rot[1] = rot[0];
     uI[1] = uI[0];
     uD[1] = uD[0];
+    flag = 0;
+    }
 }
 
 void update_ref(int16_t get_ref) {
@@ -159,13 +171,12 @@ void tc_setup(void) {
 }
 
 void TC8_Handler() { // TEST TIMER INTERRUPT
-//     //pid_controller();
   static uint32_t Count;
 
   TC2->TC_CHANNEL[2].TC_SR;   //  INTERRUPT! Read and clear status register
-  if (Count++ == 1000) {
+  if (Count++ == 10) {
     Count = 0;
-    PIOA->PIO_ODSR ^= PIO_PA19;  // Toggle LED every 1 Hz     
-    printf("%d\n\r", ref);   
+    PIOA->PIO_ODSR ^= PIO_PA19;  // Toggle LED every 1 Hz        
+    flag = 1;
   }
 }
