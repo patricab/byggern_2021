@@ -37,7 +37,12 @@ int main()
     // PIOA->PIO_PER |= PIO_PA19;
     // /* Set output enable on PC2(D0) */
     // PIOA->PIO_OER |= PIO_PA19;
-    CAN_MESSAGE msg;
+    CAN_MESSAGE rx;
+    CAN_MESSAGE tx = {
+        .id = 2,
+        .data_length = 1
+    };
+    
     while (1)
     {
     //     /* Toggle PC2(D0) */
@@ -49,11 +54,16 @@ int main()
     //     PIOA->PIO_CODR |= PIO_PA19;
         
         /* Recieve can data and send to servo */
-        can_receive(&msg, 0);
+        can_receive(&rx, 0);
         // printf("ID : %d\r\nLength: %d\r\nData: %x %x\r\n\n", msg.id, msg.data_length, msg.data[0], msg.data[1]);
-        // delay(1000000);
 
-        pwm_run((int)msg.data[3]);
-        run_solonoid((int)msg.data[2]);
+        _Bool on = ir_on();
+        tx.data[0] = (char)on;
+
+        can_send(&tx, 0);
+        printf("%d\r\n", (int)on);
+
+        pwm_run((int)rx.data[0]);
+        run_solonoid((int)rx.data[2]);
     }
 }
