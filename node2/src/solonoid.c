@@ -13,7 +13,7 @@ void solonoid_setup(void){
     PIOC->PIO_OER |= PIO_PC9;
 }
 
-void run_solonoid(bool in_state){
+void run_solonoid(_Bool in_state){
 
     if (in_state == 1){
         PIOC->PIO_CODR |= PIO_PC9;
