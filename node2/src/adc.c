@@ -14,7 +14,7 @@ unsigned char IR_average_filter(void);
  */
 int adc_init(void) {
     /* Setup for ADC mode register */
-    REG_ADC_MR &= ~ADC_MR_TRGEN; // Disable hardware triggers
+    //REG_ADC_MR &= ~ADC_MR_TRGEN; // Disable hardware triggers
     // REG_ADC_MR |= ADC_MR_LOWRES_BITS_12; // Set 12-bit resolution
     // REG_ADC_MR |= ADC_MR_SLEEP_NORMAL; // Set ADC to normal mode
     // REG_ADC_MR |= ADC_MR_FWUP_OFF; // Set normal sleep mode
@@ -57,8 +57,7 @@ unsigned char adc_read(void) {
     REG_ADC_CR |= ADC_CR_START; // start conversion
     
     while(!(REG_ADC_ISR));
-    return (ADC -> ADC_CDR[0]);
-    }
+    return ADC->ADC_CDR[0];
 }
 
 /**
@@ -68,23 +67,24 @@ unsigned char adc_read(void) {
  * @return true IR blocked
  * @return false IR not blocked
  */
-_Bool ir_on(void) {
+int ir_on(void) {
     /* Get average IR values */
-    unsigned char data = IR_average_filter();
+    // unsigned char data = IR_average_filter();
+    unsigned char data = adc_read();
     
     if(data < 100){
-        return true;
+        return 1;
     }
     else {
-        return false;
+        return 0;
     }
 }
 
 #define num_readings 5
 // unsigned char num_readings = 5;
-unsigned char array[num_readings];
-uint8_t index = 0;
-unsigned char total = 0;
+volatile unsigned char array[num_readings];
+volatile uint8_t index = 0;
+volatile  unsigned char total = 0;
 
 unsigned char IR_average_filter(void) {
 	total = total - array[index];

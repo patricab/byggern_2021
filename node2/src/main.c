@@ -57,11 +57,14 @@ int main()
         can_receive(&rx, 0);
         // printf("ID : %d\r\nLength: %d\r\nData: %x %x\r\n\n", msg.id, msg.data_length, msg.data[0], msg.data[1]);
 
-        _Bool on = ir_on();
-        tx.data[0] = (char)on;
+        int on = ir_on();
+        // tx.data[0] = (char)on;
 
-        can_send(&tx, 0);
-        printf("%d\r\n", (int)on);
+        // can_send(&tx, 0);
+
+        // printf("%d\r\n", (int)adc_read());
+        // printf("%d\r\n", (int)IR_average_filter());
+        printf("%d\r\n", on);
 
         pwm_run((int)rx.data[0]);
         run_solonoid((int)rx.data[2]);

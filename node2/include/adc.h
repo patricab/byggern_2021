@@ -24,6 +24,8 @@ unsigned char adc_read(void);
  * @return true IR blocked
  * @return false IR not blocked
  */
-_Bool ir_on(void);
+int ir_on(void);
+
+unsigned char IR_average_filter(void);
 
 #endif
