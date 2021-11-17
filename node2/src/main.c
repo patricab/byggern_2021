@@ -23,6 +23,7 @@ int main()
     configure_uart();
     can_test();
     pwm_init();
+    solonoid_setup();
 
     // uint8_t ret = can_init_def_tx_rx_mb();
     // if (ret > 0) {
@@ -37,24 +38,24 @@ int main()
     // PIOA->PIO_OER |= PIO_PA19;
     
     // CAN_MESSAGE msg;
-    // while (1)
-    // {
-    // //     /* Toggle PC2(D0) */
-    // //     int i = 0;
-    // //     while (i < 1000000) {i++;}
-    // //     PIOA->PIO_SODR |= PIO_PA19;
-    // //     i = 0;
-    // //     while (i < 1000000) {i++;}
-    // //     PIOA->PIO_CODR |= PIO_PA19;
-    //     // printf("Test\r\n", 0);
+    while (1)
+    {
+    //     /* Toggle PC2(D0) */
+    //     int i = 0;
+    //     while (i < 1000000) {i++;}
+    //     PIOA->PIO_SODR |= PIO_PA19;
+    //     i = 0;
+    //     while (i < 1000000) {i++;}
+    //     PIOA->PIO_CODR |= PIO_PA19;
+        // printf("Test\r\n", 0);
         
-    //     /* Recieve can data and send to servo */
-    //     can_receive(&msg, 0);
-    //     // printf("ID : %d\r\nLength: %d\r\nData: %x %x\r\n\n", msg.id, msg.data_length, msg.data[0], msg.data[1]);
-    //     // delay(1000000);
+        /* Recieve can data and send to servo */
+        can_receive(&msg, 0);
+        // printf("ID : %d\r\nLength: %d\r\nData: %x %x\r\n\n", msg.id, msg.data_length, msg.data[0], msg.data[1]);
+        // delay(1000000);
 
-    //     pwm_run((int)msg.data[1]);
-        
-    // }
+        pwm_run((int)msg.data[1]);
+        // run_solonoid(bool in_state);
+    }
     
 }
