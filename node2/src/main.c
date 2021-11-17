@@ -7,6 +7,7 @@
 #include <printf-stdarg.h>
 #include <can_controller.h>
 #include <adc.h>
+#include <solonoid.h>
 
 // void delay(int ms) {
 //    int i = 0;

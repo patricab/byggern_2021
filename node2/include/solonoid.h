@@ -6,7 +6,7 @@
  * @brief If input is high the solonoid is activated
  * 
  */
-void run_solonoid(bool);
+void run_solonoid(_Bool in_state);
 
 
 /**

@@ -24,6 +24,6 @@ unsigned char adc_read(void);
  * @return true IR blocked
  * @return false IR not blocked
  */
-bool ir_on(unsigned char *data);
+_Bool ir_on(unsigned char data);
 
 #endif
