@@ -1,18 +1,18 @@
 #include <stdio.h>
 #include <stdarg.h>
-#include "motor_controller.h"
+#include <motor_controller.h>
 #include "sam.h"
 #include "dac.h"
 #include "uart.h"
 
 // PID constants
-int16_t Kp = 1;
-int16_t Ti = 1;
-int16_t Td = 1;
-int16_t N = 10;
-int16_t T = 0.01; // Time between runs
-int16_t alpha = T / Ti;
-int16_t beta = Td / (Td+T*N);
+#define Kp 1
+#define Ti 1
+#define Td 1
+#define N 10
+#define T 0.01 // Time between runs
+const int16_t alpha = T / Ti;
+const int16_t beta = Td / (Td+T*N);
 
 // Keep track of measurements
 volatile int16_t ref = 0;
@@ -109,7 +109,7 @@ void pid_controller(void) { // INTERRUPT, AND REFERENCE
     uD[1] = uD[0];
 }
 
-void tc_setup() {
+void tc_setup(void) {
 
   PMC->PMC_PCER1 |= PMC_PCER1_PID35;  // TC8 power ON : Enable pheriferal clock
 
@@ -138,6 +138,6 @@ void TC8_Handler() {
   TC2->TC_CHANNEL[2].TC_SR;                               // Read and clear status register
   if (Count++ == 1000) {
     Count = 0;
-    PIOA->PIO_ODSR ^= PIO_ODSR_P19;                      // Toggle LED every 1 Hz
+    PIOA->PIO_ODSR ^= PIO_PA19;                      // Toggle LED every 1 Hz        
   }
 }
