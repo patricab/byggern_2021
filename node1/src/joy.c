@@ -16,6 +16,7 @@ void joy_analog(unsigned char *data, joy_t *joy)
     joy->y_pos = (unsigned char)((data[0] * 100) / 255);
 
     joy->button = joy_but();
+    joy->rpwm = data[3];
 }
 
 /**
@@ -74,10 +75,11 @@ void joy_send(joy_t *joy)
     can_bus_init();
     can_struct msg = {
         .id = 1, 
-        .length = 3, 
+        .length = 4, 
         .data[0] = joy->x_pos, 
         .data[1] = joy->y_pos,
-        .data[2] = joy->button
+        .data[2] = joy->button,
+        .data[3] = joy->rpwm
     };
 
     /* Transmit data */

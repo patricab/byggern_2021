@@ -24,8 +24,6 @@
 #include <can_bus.h>
 #include <buttons.h>
 
-#include <test.h>
-
 int main(void)
 {
 	/* Declare variables */
