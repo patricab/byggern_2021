@@ -9,9 +9,6 @@
 #include <printf-stdarg.h>
 #include <can_controller.h>
 
-// GLOBALS
-volatile int16_t ref = 0;
-
 void delay(int ms) {
    int i = 0;
    while (i < ms){i++;}
@@ -29,7 +26,8 @@ int main()
     motor_controller_init();
     motor_enable();
     dac_init();
-    tc_setup();
+    //tc_setup();
+    //motor_encoder_calib();
 
     uint8_t ret = can_init_def_tx_rx_mb();
     if (ret > 0) {
@@ -66,8 +64,9 @@ int main()
         // printf("ID : %d\r\nLength: %d\r\nData: %x %x\r\n\n", msg.id, msg.data_length, msg.data[0], msg.data[1]);
         // delay(1000000);
         update_ref((int16_t)msg.data[3]);
-        pwm_run((int)msg.data[1]);
-        // motor_run((int)msg.data[0]);
-        //printf("%d\r\n", (int)msg.data[0]);
+        printf("%d\n\r", msg.data[0]);
+        pwm_run((int)msg.data[0]);
+        // int16_t value = motor_encoder_read();
+        // printf("%d\n\r", value);
     }   
 }

@@ -6,7 +6,7 @@
 #include "uart.h"
 
 // PID constants
-#define Kp 1
+#define Kp 0.1
 #define Ti 1
 #define Td 1
 #define N 10
@@ -39,6 +39,8 @@ void motor_controller_init() {
     PIOC->PIO_ODR |= (PIO_ODR_P1 | PIO_ODR_P2 | PIO_ODR_P3 | PIO_ODR_P4 | PIO_ODR_P5 | PIO_ODR_P6 | PIO_ODR_P7 | PIO_ODR_P8);
     /* Set output enabl for MJ1*/
     PIOD->PIO_OER |= (EN | DIR | SEL | NOT_OE | NOT_RST);
+    REG_PIOC_PUDR |= (PIO_ODR_P1 | PIO_ODR_P2 | PIO_ODR_P3 | PIO_ODR_P4 | PIO_ODR_P5 | PIO_ODR_P6 | PIO_ODR_P7 | PIO_ODR_P8); 
+    motor_encoder_reset();
 }
 
 void motor_enable() {
@@ -89,10 +91,11 @@ void motor_encoder_reset(void) {
 }
 
 void motor_encoder_calib(void) {
-    PIOD->PIO_CODR |= DIR; // Set direction, should run to the rigth
+    PIOD->PIO_SODR |= DIR; // Set direction, should run to the rigth
     dac_conversion(1000);
     int16_t cur_rot = motor_encoder_read();
     int16_t prev_rot = cur_rot+100;
+    int i = 0;
     while (prev_rot != cur_rot)
     {
         prev_rot = cur_rot;
@@ -104,7 +107,7 @@ void motor_encoder_calib(void) {
 }
 
 void pid_controller(void) { //  REFERENCE
-    TC2->TC_CHANNEL[2].TC_SR;   //  INTERRUPT! Read and clear status register
+    //TC2->TC_CHANNEL[2].TC_SR;   //  INTERRUPT! Read and clear status register
 
     // Scale reference
     ref = ref*63;
@@ -155,13 +158,14 @@ void tc_setup(void) {
   TC2->TC_CHANNEL[2].TC_CCR = TC_CCR_SWTRG | TC_CCR_CLKEN; // Software trigger TC2 counter and enable
 }
 
-// void TC8_Handler() { // TEST TIMER INTERRUPT
+void TC8_Handler() { // TEST TIMER INTERRUPT
+//     //pid_controller();
+  static uint32_t Count;
 
-//   static uint32_t Count;
-
-//   TC2->TC_CHANNEL[2].TC_SR;   //  INTERRUPT! Read and clear status register
-//   if (Count++ == 1000) {
-//     Count = 0;
-//     PIOA->PIO_ODSR ^= PIO_PA19;  // Toggle LED every 1 Hz        
-//   }
-// }
+  TC2->TC_CHANNEL[2].TC_SR;   //  INTERRUPT! Read and clear status register
+  if (Count++ == 1000) {
+    Count = 0;
+    PIOA->PIO_ODSR ^= PIO_PA19;  // Toggle LED every 1 Hz     
+    printf("%d\n\r", ref);   
+  }
+}

@@ -7,6 +7,8 @@
 #define NOT_OE PIO_PD0 // NOT OUTPUT ENABLE
 #define NOT_RST PIO_PD1 // NOT RESET
 
+extern volatile int16_t ref;
+
 /**
  * @brief Initialize motor controller
  * 
