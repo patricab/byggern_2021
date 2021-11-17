@@ -16,9 +16,9 @@ void solonoid_setup(void){
 void run_solonoid(_Bool in_state){
 
     if (in_state == 1){
-        PIOC->PIO_CODR |= PIO_PC9;
-    } else {
         PIOC->PIO_SODR |= PIO_PC9;
+    } else {
+        PIOC->PIO_CODR |= PIO_PC9;
     }
 }
 
