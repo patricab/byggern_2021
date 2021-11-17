@@ -2,6 +2,6 @@
 #define DAC_H
 
 void dac_init();
-void dac_conversion(int value);
+void dac_conversion(uint16_t value);
 
 # endif
