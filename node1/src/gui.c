@@ -10,6 +10,8 @@
 #include <gui.h>
 #include <oled.h>
 
+/* Variables */
+int game_state;
 state_t state;
 
 static state_t state_1() {
@@ -23,10 +25,19 @@ static state_t state_2() {
     oled_goto_pos(2,0);
     oled_print8("*");
 }
- 
-static state_t (*state_functions[2])() = {
+
+static state_t state_3() { // Game running
+    game_state = 1;
+    oled_clear_pointer();
+    oled_reset();
+    oled_goto_pos(0, 15);
+    oled_print8("Game running");
+}
+
+static state_t (*state_functions[3])() = {
     state_1,
-    state_2
+    state_2,
+    state_3
 };
  
 /**
@@ -36,40 +47,40 @@ static state_t (*state_functions[2])() = {
  * @param joy Target joystick structure
  */
 int gui_run(joy_t *joy){
-        
+    
     /* Change state based on joystick direction */
     if (joy->dir == DOWN) { // Only works in menu
         state++;
     } else if (joy->dir == UP) {
         state--;
     }
+    
     /* Build menu based on state */
     if (joy->dir == RIGHT) { 
         if (state == STATE_1){ // Run game
-            oled_reset();
-            oled_goto_pos(0, 15);
-            oled_print8("Game running");
-            return 1;
+            state = STATE_3;
         } else if (state == STATE_2){
             score();
-            return 0;
+            game_state = 0;
         } 
     } else if (joy->dir == LEFT) { 
         menu_build();
-        return 0;
+        game_state = 0;
     }
 
     /* Loop state on boundary condition */
-    if (state == STATE_2 + 1){
+    if (state == STATE_3 + 1){
         state = STATE_1;
     }
     else if (state == STATE_1 - 1){
-        state = STATE_2;
+        state = STATE_3;
     }
 
     (*state_functions[state])(); // Run state
 
     _delay_ms(200);
+    
+    return game_state;
 }
 
 /**
@@ -89,6 +100,7 @@ void menu_build(void)
 }
 
 void score(void){
+    oled_clear_pointer();
     oled_reset();
     oled_goto_pos(0, 15);
     oled_print8("You win");

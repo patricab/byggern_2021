@@ -5,7 +5,8 @@
 
 typedef enum {
     STATE_1,
-    STATE_2
+    STATE_2,
+    STATE_3
 } state_t;
 
 /**
