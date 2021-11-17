@@ -10,12 +10,14 @@
 #define Ti 1
 #define Td 1
 #define N 10
-#define T 0.01 // Time between runs
+#define T 0.001 // Time between runs
 const int16_t alpha = T / Ti;
 const int16_t beta = Td / (Td+T*N);
 
-// Keep track of measurements
+// Reference
 volatile int16_t ref = 0;
+
+// Keep track of measurements and error
 volatile int16_t rot[2] = {0, 0}; // rot[k], rot[k-1]
 volatile int16_t error[2] = {0, 0}; // error[k], error[k-1]
 // Keep track of u
@@ -86,10 +88,30 @@ void motor_encoder_reset(void) {
     PIOD->PIO_SODR |= NOT_RST;
 }
 
-void pid_controller(void) { // INTERRUPT, AND REFERENCE
-    // Read inputs, reference (ref) and position (pos)
+void motor_encoder_calib(void) {
+    PIOD->PIO_CODR |= DIR; // Set direction, should run to the rigth
+    dac_conversion(1000);
+    int16_t cur_rot = motor_encoder_read();
+    int16_t prev_rot = cur_rot+100;
+    while (prev_rot != cur_rot)
+    {
+        prev_rot = cur_rot;
+        while (i < 1000) {i++;}
+        cur_rot = motor_encoder_read();
+    }
+    motor_encoder_reset();
+    update_ref(0);
+}
+
+void pid_controller(void) { //  REFERENCE
+    TC2->TC_CHANNEL[2].TC_SR;   //  INTERRUPT! Read and clear status register
+
+    // Scale reference
+    ref = ref*63;
+
+    // Read position (pos)
     rot[0] = motor_encoder_read();
-    // read ref
+    // Reference as global
 
     // Compute error signal
     error[0] = ref - rot[0]; // Calibration is necessary prior
@@ -101,6 +123,14 @@ void pid_controller(void) { // INTERRUPT, AND REFERENCE
     int16_t u = uP + uI[0] + uD[0];
 
     // SET MOTOR DIRECTION AND SEND U TO DAC
+    if (error > 0) {
+        PIOD->PIO_CODR |= DIR; // Set direction left
+        dac_conversion(u);
+    }
+    else if (error < 0) {
+        PIOD->PIO_SODR |= DIR; // Set direction rigth
+        dac_conversion(u);
+    }
 
     // Update previous signals
     error[1] = error[0];
@@ -109,35 +139,29 @@ void pid_controller(void) { // INTERRUPT, AND REFERENCE
     uD[1] = uD[0];
 }
 
+void update_ref(int16_t get_ref) {
+    ref = get_ref;
+}
+
 void tc_setup(void) {
 
   PMC->PMC_PCER1 |= PMC_PCER1_PID35;  // TC8 power ON : Enable pheriferal clock
-
-  //PIOD->PIO_PDR |= PIO_PDR_P7;                            // Set the pin to the peripheral
-  //PIOD->PIO_ABSR |= PIO_PD7B_TIOA8;                       // Peripheral type B
-
   TC2->TC_CHANNEL[2].TC_CMR = TC_CMR_TCCLKS_TIMER_CLOCK4  // MCK/2 = 42 M Hz, clk on rising edge
                               | TC_CMR_WAVE               // Waveform mode
                               | TC_CMR_WAVSEL_UP_RC;       // UP mode with automatic trigger on RC Compare
-  //  | TC_CMR_ACPA_CLEAR         // Clear TIOA2 on RA compare match
-  //  | TC_CMR_ACPC_SET;          // Set TIOA2 on RC compare match
-
-
-  TC2->TC_CHANNEL[2].TC_RC = 656;  //<*********************  Frequency = (Mck/2)/TC_RC  Hz
-
-
+  TC2->TC_CHANNEL[2].TC_RC = 656;  //1000 Hz (Frequency = (Mck/2)/TC_RC  Hz)
   TC2->TC_CHANNEL[2].TC_IER = TC_IER_CPCS;
   NVIC_EnableIRQ(TC8_IRQn);
   TC2->TC_CHANNEL[2].TC_CCR = TC_CCR_SWTRG | TC_CCR_CLKEN; // Software trigger TC2 counter and enable
 }
 
-void TC8_Handler() {
+// void TC8_Handler() { // TEST TIMER INTERRUPT
 
-  static uint32_t Count;
+//   static uint32_t Count;
 
-  TC2->TC_CHANNEL[2].TC_SR;                               // Read and clear status register
-  if (Count++ == 1000) {
-    Count = 0;
-    PIOA->PIO_ODSR ^= PIO_PA19;                      // Toggle LED every 1 Hz        
-  }
-}
+//   TC2->TC_CHANNEL[2].TC_SR;   //  INTERRUPT! Read and clear status register
+//   if (Count++ == 1000) {
+//     Count = 0;
+//     PIOA->PIO_ODSR ^= PIO_PA19;  // Toggle LED every 1 Hz        
+//   }
+// }
