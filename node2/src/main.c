@@ -6,7 +6,7 @@
 #include <pwm.h>
 #include <printf-stdarg.h>
 #include <can_controller.h>
-#include <test.h>
+#include <adc.h>
 
 // void delay(int ms) {
 //    int i = 0;
@@ -21,7 +21,7 @@ int main()
 
     /* Initialize libraries */
     configure_uart();
-    // can_test();
+    adc_init();
     pwm_init();
     solonoid_setup();
 
@@ -36,7 +36,6 @@ int main()
     // PIOA->PIO_PER |= PIO_PA19;
     // /* Set output enable on PC2(D0) */
     // PIOA->PIO_OER |= PIO_PA19;
-    
     CAN_MESSAGE msg;
     while (1)
     {
@@ -57,5 +56,4 @@ int main()
         pwm_run((int)msg.data[1]);
         run_solonoid((int)msg.data[2]);
     }
-    
 }
