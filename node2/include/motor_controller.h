@@ -10,8 +10,10 @@
 void motor_controller_init();
 void motor_enable();
 void motor_disable();
-void motor_run(int joy_pos);
+void motor_controller_open_loop(int joy_pos);
 int16_t motor_encoder_read(void);
+void motor_encoder_reset(void);
+void pid_controller(void);
 
 
 #endif
