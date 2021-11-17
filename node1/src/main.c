@@ -53,12 +53,11 @@ int main(void)
         joy_analog(data, &joy);
         joy_dir(data, &joy);
 
+		/* Run state machine, send game state over CAN */
+		joy.game = (char)gui_run(&joy);
+
         joy_send(&joy);
 
-		/* Run state machine, start game if running */
-		if (gui_run(&joy)) {
-           break; 
-        }
 
         // printf("Joystick pos: %d %d\r\n", joy.x_pos, joy.y_pos);
         // printf("Joystick dir: %u\r\n\n", joy.dir);

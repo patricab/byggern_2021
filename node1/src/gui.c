@@ -35,7 +35,7 @@ static state_t (*state_functions[2])() = {
  * @param state state_t State enum
  * @param joy Target joystick structure
  */
-_Bool gui_run(joy_t *joy){
+int gui_run(joy_t *joy){
         
     /* Change state based on joystick direction */
     if (joy->dir == DOWN) { // Only works in menu
@@ -69,7 +69,7 @@ _Bool gui_run(joy_t *joy){
 
     (*state_functions[state])(); // Run state
 
-    _delay_ms(10);
+    _delay_ms(200);
 }
 
 /**
@@ -89,11 +89,9 @@ void menu_build(void)
 }
 
 void score(void){
-    state = STATE_1;
-
     oled_reset();
     oled_goto_pos(0, 15);
-    oled_print8("You're the winner");
+    oled_print8("You win");
 
     // oled_reset();   
     // oled_goto_pos(0, 15);

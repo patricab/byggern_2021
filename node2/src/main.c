@@ -56,14 +56,15 @@ int main()
         /* Recieve can data and send to servo */
         can_receive(&rx, 0);
         // printf("ID : %d\r\nLength: %d\r\nData: %x %x\r\n\n", msg.id, msg.data_length, msg.data[0], msg.data[1]);
+        printf("%d\r\n", rx.data[3]);
 
-        _Bool on = ir_on();
-        tx.data[0] = (char)on;
+        // _Bool on = ir_on();
+        // tx.data[0] = (char)on;
 
-        can_send(&tx, 0);
-        printf("%d\r\n", (int)on);
+        // can_send(&tx, 0);
+        // printf("%d\r\n", (int)on);
 
-        pwm_run((int)rx.data[0]);
-        run_solonoid((int)rx.data[2]);
+        // pwm_run((int)rx.data[0]);
+        // run_solonoid((int)rx.data[2]);
     }
 }
