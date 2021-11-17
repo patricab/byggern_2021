@@ -58,6 +58,8 @@ int main(void)
 
         joy_send(&joy);
 
+		/* Run state machine */
+		// gui_run(&joy);
 
         // printf("Joystick pos: %d %d\r\n", joy.x_pos, joy.y_pos);
         // printf("Joystick dir: %u\r\n\n", joy.dir);
