@@ -8,6 +8,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include <bit.h>
+#include <oled.h>
+
+#include <ext.h>
+#include <adc.h>
+#include <string.h>
+#include <gui.h>
+#include <joy.h>
 #include <uart.h>
 #include <sram.h>
 #include <spi.h>
@@ -26,6 +34,9 @@ int main(void)
 	
 	/* Initialize libraries */
 	uart_init(9600);
+	oled_init();
+	oled_reset();
+	gui_build();
     adc_init();
 	can_bus_init(); // also initialize SPI
 
@@ -45,19 +56,14 @@ int main(void)
 
         joy_send(&joy);
 
+		/* Run state machine */
+		gui_run(&joy);
+
         // printf("Joystick pos: %d %d\r\n", joy.x_pos, joy.y_pos);
         // printf("Joystick dir: %u\r\n\n", joy.dir);
         // printf("Left PWM: %x\r\n", data[2]);
         // printf("Right PWM: %x\r\n\n", data[3]);
         // _delay_ms(200);
 	}
-
-	// uart_init(9600);
-	// printf("NEW UPLOAD\n\r");
-
-	// while (1) {
-	// 	int joy_but_pos = joy_but();
-	// 	printf("%i\n\r", joy_but_pos);
-	// 	_delay_ms(50);
 
 }

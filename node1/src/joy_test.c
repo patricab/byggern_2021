@@ -13,7 +13,7 @@
 #include <test.h>
 
 unsigned char data[4] = {0};
-volatile joy_t joy;
+joy_t joy;
 
 void joy_test(void)
 {
