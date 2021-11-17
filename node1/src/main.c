@@ -25,7 +25,6 @@ int main(void)
 {
 	/* Declare variables */
 	unsigned char data[4] = {0};
-    int score = 0;
     can_struct rx;
 	joy_t joy;
 
@@ -50,7 +49,7 @@ int main(void)
         joy_dir(data, &joy);
 
 		/* Run state machine, send game state over CAN */
-		joy.game = (char)gui_run(&joy, score);
+		joy.game = (char)gui_run(&joy);
         joy_send(&joy);
 
         // printf("Joystick pos: %d %d\r\n", joy.x_pos, joy.y_pos);

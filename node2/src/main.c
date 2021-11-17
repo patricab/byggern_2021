@@ -34,10 +34,6 @@ int main()
     // /* Set output enable on PC2(D0) */
     // PIOA->PIO_OER |= PIO_PA19;
     CAN_MESSAGE rx;
-    CAN_MESSAGE tx = {
-        .id = 2,
-        .data_length = 1
-    };
     
     while (1)
     {
@@ -59,11 +55,8 @@ int main()
         if (rx.data[3]) {
             // pwm_run((int)rx.data[0]);
             // run_solonoid((int)rx.data[2]);
-
-            /* Update score based on IR sensor */
-            tx.data[0] = tx.data[0] + ir_on(); 
-            can_send(&tx, 0);
         }
-
+        
+        printf("%d\r\n", score);
     }
 }
