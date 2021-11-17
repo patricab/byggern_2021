@@ -13,6 +13,7 @@
 /* Variables */
 int game_state;
 state_t state;
+int score;
 
 static state_t state_1() {
     oled_clear_pointer();   
@@ -32,6 +33,8 @@ static state_t state_3() { // Game running
     oled_reset();
     oled_goto_pos(0, 15);
     oled_print8("Game running");
+    oled_goto_pos(4, 15);
+    oled_print8(score);
 }
 
 static state_t (*state_functions[3])() = {
@@ -46,7 +49,8 @@ static state_t (*state_functions[3])() = {
  * @param state state_t State enum
  * @param joy Target joystick structure
  */
-int gui_run(joy_t *joy){
+int gui_run(joy_t *joy, int game_score){
+    score = game_score;
     
     /* Change state based on joystick direction */
     if (joy->dir == DOWN) { // Only works in menu
@@ -60,7 +64,7 @@ int gui_run(joy_t *joy){
         if (state == STATE_1){ // Run game
             state = STATE_3;
         } else if (state == STATE_2){
-            score();
+            ui_score();
             game_state = 0;
         } 
     } else if (joy->dir == LEFT) { 
@@ -99,11 +103,11 @@ void menu_build(void)
     oled_print8("Scoreboard");
 }
 
-void score(void){
+void ui_score(void){
     oled_clear_pointer();
     oled_reset();
     oled_goto_pos(0, 15);
-    oled_print8("You win");
+    oled_print8(score);
 
     // oled_reset();   
     // oled_goto_pos(0, 15);

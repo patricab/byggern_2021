@@ -15,7 +15,7 @@ typedef enum {
  * @param joy Target joystick structure
  * @return bool Game running?
  */
-int gui_run(joy_t *joy);
+int gui_run(joy_t *joy, int game_score);
 
 /**
  * @brief Build OLED GUI menu

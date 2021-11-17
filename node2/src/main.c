@@ -1,18 +1,14 @@
 #include <stdio.h>
 #include <stdarg.h>
+#include <printf-stdarg.h>
 
 #include "sam.h"
 #include "uart.h"
-#include <pwm.h>
-#include <printf-stdarg.h>
-#include <can_controller.h>
-#include <adc.h>
-#include <solonoid.h>
 
-// void delay(int ms) {
-//    int i = 0;
-//    while (i < ms){i++;}
-// }
+#include <can_controller.h>
+#include <solonoid.h>
+#include <pwm.h>
+#include <adc.h>
 
 int main()
 {
@@ -43,7 +39,6 @@ int main()
         .data_length = 1
     };
     
-    int i;
     while (1)
     {
     //     /* Toggle PC2(D0) */
@@ -54,23 +49,21 @@ int main()
     //     while (i < 1000000) {i++;}
     //     PIOA->PIO_CODR |= PIO_PA19;
         
-        /* Recieve can data and send to servo */
+        /* Recieve CAN data */
         can_receive(&rx, 0);
+
         // printf("ID : %d\r\nLength: %d\r\nData: %x %x\r\n\n", msg.id, msg.data_length, msg.data[0], msg.data[1]);
-        printf("%d\r\n", rx.data[3]);
+        // printf("%d\r\n", rx.data[3]);
 
-        int on = ir_on();
-        // tx.data[0] = (char)on;
+        /* Check if node 1 has started game */
+        if (rx.data[3]) {
+            // pwm_run((int)rx.data[0]);
+            // run_solonoid((int)rx.data[2]);
 
-        // can_send(&tx, 0);
+            /* Update score based on IR sensor */
+            tx.data[0] = tx.data[0] + ir_on(); 
+            can_send(&tx, 0);
+        }
 
-        // printf("%d\r\n", (int)adc_read());
-        // printf("%d\r\n", (int)IR_average_filter());
-        // printf("%d\r\n", on);
-        // i = 0;
-        // while (i < 100000) {i++;}
-
-        // pwm_run((int)rx.data[0]);
-        // run_solonoid((int)rx.data[2]);
     }
 }

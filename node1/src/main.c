@@ -14,14 +14,10 @@
 
 #include <ext.h>
 #include <adc.h>
-#include <string.h>
 #include <gui.h>
 #include <joy.h>
 #include <uart.h>
-#include <sram.h>
 #include <spi.h>
-#include <adc.h>
-#include <joy.h>
 #include <can_bus.h>
 #include <buttons.h>
 
@@ -29,12 +25,13 @@ int main(void)
 {
 	/* Declare variables */
 	unsigned char data[4] = {0};
-	volatile joy_t joy;
+    int score = 0;
+    can_struct rx;
+	joy_t joy;
 
 	/* Initialize libraries */
-	ext_init();
-	adc_init();
 	uart_init(9600);
+	adc_init();
 	oled_init();
 	menu_build();
 	can_bus_init(); // also initialize SPI
@@ -42,7 +39,6 @@ int main(void)
     /* Read ADC and calibrate joystick */
     adc_read(data);
     joy_analog(data, &joy);
-
     _delay_ms(10);
     joy_calibrate(data, &joy);
 
@@ -54,12 +50,8 @@ int main(void)
         joy_dir(data, &joy);
 
 		/* Run state machine, send game state over CAN */
-		joy.game = (char)gui_run(&joy);
-
+		joy.game = (char)gui_run(&joy, score);
         joy_send(&joy);
-
-		/* Run state machine */
-		// gui_run(&joy);
 
         // printf("Joystick pos: %d %d\r\n", joy.x_pos, joy.y_pos);
         // printf("Joystick dir: %u\r\n\n", joy.dir);
@@ -67,5 +59,4 @@ int main(void)
         // printf("Right PWM: %x\r\n\n", data[3]);
         // _delay_ms(200);
 	}
-
 }
