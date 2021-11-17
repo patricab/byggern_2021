@@ -4,6 +4,9 @@
 #include <adc.h>
 #include "sam.h"
 
+// Forward declaration
+unsigned char IR_average_filter(void);
+
 /**
  * @brief Initialize ADC library
  * 
@@ -56,11 +59,14 @@ unsigned char adc_read(void) {
  * @return true IR blocked
  * @return false IR not blocked
  */
-_Bool ir_on(unsigned char data) {
-   if(data < 100){
+_Bool ir_on(void) {
+    /* Get average IR values */
+    unsigned char data = IR_average_filter();
+    
+    if(data < 100){
         return true;
     }
-    else{
+    else {
         return false;
     }
 }
@@ -82,6 +88,3 @@ unsigned char IR_average_filter(void) {
 	unsigned char average = total / num_readings;
 	return average;
 }
-
-
-
