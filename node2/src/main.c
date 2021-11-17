@@ -48,7 +48,7 @@ int main()
         
         /* Recieve can data and send to servo */
         can_receive(&msg, 0);
-        // printf("ID : %d\r\nLength: %d\r\nData: %x %x\r\n\n", msg.id, msg.data_length, msg.data[0], msg.data[1]);
+        printf("ID : %d\r\nLength: %d\r\nData: %x %x\r\n\n", msg.id, msg.data_length, msg.data[0], msg.data[1]);
         // delay(1000000);
 
         pwm_run((int)msg.data[1]);
