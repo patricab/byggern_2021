@@ -1,6 +1,7 @@
 #ifndef F_CPU
 #define F_CPU 4915200
 #endif
+
 #define __AVR_ATmega162__
 
 #include <avr/io.h>
@@ -8,7 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <bit.h>
+#include <uart.h>
 #include <oled.h>
 
 #include <ext.h>
@@ -29,13 +30,13 @@ int main(void)
 	/* Declare variables */
 	unsigned char data[4] = {0};
 	volatile joy_t joy;
-	
+
 	/* Initialize libraries */
+	ext_init();
+	adc_init();
 	uart_init(9600);
 	oled_init();
-	oled_reset();
-	gui_build();
-    adc_init();
+	menu_build();
 	can_bus_init(); // also initialize SPI
 
     /* Read ADC and calibrate joystick */
@@ -52,10 +53,13 @@ int main(void)
         joy_analog(data, &joy);
         joy_dir(data, &joy);
 
+		/* Run state machine, send game state over CAN */
+		joy.game = (char)gui_run(&joy);
+
         joy_send(&joy);
 
 		/* Run state machine */
-		gui_run(&joy);
+		// gui_run(&joy);
 
         // printf("Joystick pos: %d %d\r\n", joy.x_pos, joy.y_pos);
         // printf("Joystick dir: %u\r\n\n", joy.dir);

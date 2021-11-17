@@ -75,11 +75,12 @@ void joy_send(joy_t *joy)
     can_bus_init();
     can_struct msg = {
         .id = 1, 
-        .length = 4, 
+        .length = 5, 
         .data[0] = joy->x_pos, 
         .data[1] = joy->y_pos,
         .data[2] = joy->button,
-        .data[3] = joy->rpwm
+        .data[3] = joy->rpwm,
+        .data[3] = joy->game
     };
 
     /* Transmit data */

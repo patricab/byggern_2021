@@ -57,6 +57,7 @@ int main()
         /* Recieve can data and send to servo */
         can_receive(&rx, 0);
         // printf("ID : %d\r\nLength: %d\r\nData: %x %x\r\n\n", msg.id, msg.data_length, msg.data[0], msg.data[1]);
+        printf("%d\r\n", rx.data[3]);
 
         int on = ir_on();
         // tx.data[0] = (char)on;
@@ -65,9 +66,9 @@ int main()
 
         // printf("%d\r\n", (int)adc_read());
         // printf("%d\r\n", (int)IR_average_filter());
-        printf("%d\r\n", on);
-        i = 0;
-        while (i < 100000) {i++;}
+        // printf("%d\r\n", on);
+        // i = 0;
+        // while (i < 100000) {i++;}
 
         // pwm_run((int)rx.data[0]);
         // run_solonoid((int)rx.data[2]);
