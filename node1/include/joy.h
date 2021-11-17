@@ -1,4 +1,4 @@
-#if !defined(JOY_H)
+#ifndef JOY_H
 #define JOY_H
 
 /* Direction struct */
@@ -13,8 +13,10 @@ typedef enum {
 /* Joystick struct */
 typedef struct {
     int middle[2];
-    int x_pos; // % Analog positions
-    int y_pos;
+    unsigned char x_pos; // % Analog positions
+    unsigned char y_pos;
+    unsigned char rpwm;
+    int button;
     dir_t dir;
 } joy_t;
 
@@ -42,5 +44,12 @@ void joy_dir(unsigned char *data, joy_t *joy);
  * @param joy Target joystick struct
  */
 void joy_calibrate(unsigned char *data, joy_t *joy);
+
+/**
+ * @brief Send joystick data on CAN buffer 0
+ * 
+ * @param joy Target joystick struct
+ */
+void joy_send(joy_t *joy);
 
 #endif // JOY_H

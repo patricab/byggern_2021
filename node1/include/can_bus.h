@@ -1,6 +1,8 @@
 #ifndef CAN_BUS_H
 #define CAN_BUS_H
 
+#include <stdint.h>
+
 typedef struct { // Define the can message structure
 	unsigned int id; // lower ID, higher priority
 	// Ex. can_message.id = 0x0;

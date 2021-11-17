@@ -1,4 +1,6 @@
+#ifndef F_CPU
 #define F_CPU 4915200
+#endif
 #define __AVR_ATmega162__
 
 #include <avr/io.h>
@@ -6,8 +8,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+<<<<<<< HEAD
 #include <uart.h>
 // #include <bit.h>
+=======
+#include <bit.h>
+>>>>>>> main
 #include <oled.h>
 
 #include <ext.h>
@@ -15,42 +21,53 @@
 #include <string.h>
 #include <gui.h>
 #include <joy.h>
-
-unsigned char d[4] = {0};
-joy_t joy;
+#include <uart.h>
+#include <sram.h>
+#include <spi.h>
+#include <adc.h>
+#include <joy.h>
+#include <can_bus.h>
+#include <buttons.h>
 
 int main(void)
 {
-	/* Init functions */
+	/* Declare variables */
+	unsigned char data[4] = {0};
+	volatile joy_t joy;
+
+	/* Initialize libraries */
 	ext_init();
 	adc_init();
-	oled_init();
 	uart_init(9600);
+	oled_init();
 	oled_reset();
-	menu_build();
-	
-	/* Calibrate joystick and find initial direction */
-	adc_read(d);
-    joy_analog(d, &joy);
-    joy_calibrate(d, &joy);
-	// joy_dir(d, &joy);
+	gui_build();
+	can_bus_init(); // also initialize SPI
 
-	while (1)
-	{
-		/* Get joystick direction */
-		adc_read(d);
-		joy_analog(d, &joy);
-		joy_dir(d, &joy);
+    /* Read ADC and calibrate joystick */
+    adc_read(data);
+    joy_analog(data, &joy);
+
+    _delay_ms(10);
+    joy_calibrate(data, &joy);
+
+    while (1) 
+    {
+        // Read ADC and get joystick position/direction
+        adc_read(data);
+        joy_analog(data, &joy);
+        joy_dir(data, &joy);
+
+        joy_send(&joy);
 
 		/* Run state machine */
-		_Bool game_is_running = gui_run(&joy);
+		gui_run(&joy);
 
-		
-		
-		printf("%d\r\n", (int)game_is_running);
-		// printf("test\n\r");
+        // printf("Joystick pos: %d %d\r\n", joy.x_pos, joy.y_pos);
+        // printf("Joystick dir: %u\r\n\n", joy.dir);
+        // printf("Left PWM: %x\r\n", data[2]);
+        // printf("Right PWM: %x\r\n\n", data[3]);
+        // _delay_ms(200);
 	}
-	// oled_print8("SEND NUDES");
-	// oled_goto_pos(1,0);
-	// oled_print8("Oled");
+
 }
