@@ -9,11 +9,9 @@
 
 #include <gui.h>
 #include <oled.h>
-#include <uart.h>
 
 state_t state;
 
- 
 static state_t state_1() {
     oled_clear_pointer();   
     oled_goto_pos(0,0);
@@ -26,29 +24,10 @@ static state_t state_2() {
     oled_print8("*");
 }
  
-static state_t state_3() {
-    oled_clear_pointer();
-    oled_goto_pos(4,0);
-    oled_print8("*");
-}
- 
-static state_t state_4(){
-    oled_clear_pointer();
-    oled_goto_pos(6,0);
-    oled_print8("*");
-}
-
-
- 
-static state_t (*state_functions[4])() = {
+static state_t (*state_functions[2])() = {
     state_1,
-    state_2,
-    state_3,
-    state_4,
-    
-    
+    state_2
 };
- 
  
 /**
  * @brief Run GUI state machine
@@ -59,38 +38,33 @@ static state_t (*state_functions[4])() = {
 _Bool gui_run(joy_t *joy){
         
     /* Change state based on joystick direction */
-    if (joy->dir == DOWN) { //only works in menu
+    if (joy->dir == DOWN) { // Only works in menu
         state++;
     } else if (joy->dir == UP) {
         state--;
     }
-    if (joy->dir == RIGHT) { // Select shit
-        if (state == STATE_1){
-            game_gui_run();
+    /* Build menu based on state */
+    if (joy->dir == RIGHT) { 
+        if (state == STATE_1){ // Run game
+            oled_reset();
+            oled_goto_pos(0, 15);
+            oled_print8("Game running");
             return 1;
-
-            //start spill
-            //fjern pointer
-            
+        } else if (state == STATE_2){
+            score();
+            return 0;
         } 
-        else if(state == STATE_2){
-            choice2_build();
-        } 
-        else if(state == STATE_3){
-            choice1_build();
-        }
-    }
-    if (joy->dir == LEFT) { // Select shit
+    } else if (joy->dir == LEFT) { 
         menu_build();
         return 0;
     }
 
-       /* Loop state on boundary condition */
-    if (state == STATE_4 + 1){
+    /* Loop state on boundary condition */
+    if (state == STATE_2 + 1){
         state = STATE_1;
     }
     else if (state == STATE_1 - 1){
-        state = STATE_4;
+        state = STATE_2;
     }
 
     (*state_functions[state])(); // Run state
@@ -111,45 +85,23 @@ void menu_build(void)
     oled_goto_pos(0, 15);
     oled_print8("Start spill");
     oled_goto_pos(2, 15);
-    oled_print8("Valg 2");
-    oled_goto_pos(4, 15);
-    oled_print8("Valg 3");
-    oled_goto_pos(6, 15);
-    oled_print8("Valg 4");
+    oled_print8("Scoreboard");
 }
 
-void choice1_build(void){
-    state = STATE_1;
-
-    oled_reset();   
-    oled_goto_pos(0, 15);
-    oled_print8("Menu1 1");
-    oled_goto_pos(2, 15);
-    oled_print8("Menu1 2");
-    oled_goto_pos(4, 15);
-    oled_print8("Menu1 3");
-    oled_goto_pos(6, 15);
-    oled_print8("Menu1 4");
-}
-void choice2_build(void){
+void score(void){
     state = STATE_1;
 
     oled_reset();
     oled_goto_pos(0, 15);
-    oled_print8("Menu2 1");
-    oled_goto_pos(2, 15);
-    oled_print8("Menu2 2");
-    oled_goto_pos(4, 15);
-    oled_print8("Menu2 3");
-    oled_goto_pos(6, 15);
-    oled_print8("Menu2 4");
+    oled_print8("You're the winner");
+
+    // oled_reset();   
+    // oled_goto_pos(0, 15);
+    // oled_print8("Menu1 1");
+    // oled_goto_pos(2, 15);
+    // oled_print8("Menu1 2");
+    // oled_goto_pos(4, 15);
+    // oled_print8("Menu1 3");
+    // oled_goto_pos(6, 15);
+    // oled_print8("Menu1 4");
 }
-
-void game_gui_run(void){
-
-    oled_reset();
-    oled_goto_pos(0, 15);
-    oled_print8("Game running");
-
-}
-

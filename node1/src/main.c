@@ -1,6 +1,7 @@
 #ifndef F_CPU
 #define F_CPU 4915200
 #endif
+
 #define __AVR_ATmega162__
 
 #include <avr/io.h>
@@ -8,12 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-<<<<<<< HEAD
 #include <uart.h>
-// #include <bit.h>
-=======
-#include <bit.h>
->>>>>>> main
 #include <oled.h>
 
 #include <ext.h>
@@ -40,8 +36,7 @@ int main(void)
 	adc_init();
 	uart_init(9600);
 	oled_init();
-	oled_reset();
-	gui_build();
+	menu_build();
 	can_bus_init(); // also initialize SPI
 
     /* Read ADC and calibrate joystick */
@@ -60,8 +55,10 @@ int main(void)
 
         joy_send(&joy);
 
-		/* Run state machine */
-		gui_run(&joy);
+		/* Run state machine, start game if running */
+		if (gui_run(&joy)) {
+           break; 
+        }
 
         // printf("Joystick pos: %d %d\r\n", joy.x_pos, joy.y_pos);
         // printf("Joystick dir: %u\r\n\n", joy.dir);

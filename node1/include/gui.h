@@ -1,20 +1,18 @@
-#ifndef gui_H
-#define gui_H
+#ifndef GUI_H
+#define GUI_H
 
 #include <joy.h>
 
 typedef enum {
     STATE_1,
-    STATE_2,
-    STATE_3,
-    STATE_4,
+    STATE_2
 } state_t;
 
 /**
  * @brief Run GUI state machine
  * 
- * @param state state_t State enum
  * @param joy Target joystick structure
+ * @return bool Game running?
  */
 _Bool gui_run(joy_t *joy);
 
@@ -22,9 +20,5 @@ _Bool gui_run(joy_t *joy);
  * @brief Build OLED GUI menu
  */
 void menu_build(void);
-
-void game_gui_run(void);
-void choice1_build(void);
-void choice2_build(void);
 
 #endif
