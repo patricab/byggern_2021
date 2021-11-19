@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdarg.h>
+#include <printf-stdarg.h>
 
 #include "sam.h"
 #include "uart.h"
@@ -8,11 +9,9 @@
 #include <pwm.h>
 #include <printf-stdarg.h>
 #include <can_controller.h>
-
-void delay(int ms) {
-   int i = 0;
-   while (i < ms){i++;}
-}
+#include <solonoid.h>
+#include <pwm.h>
+#include <adc.h>
 
 int main()
 {
@@ -22,15 +21,15 @@ int main()
 
     /* Initialize libraries */
     configure_uart();
+    adc_init();
     pwm_init();
     motor_controller_init();
     motor_enable();
     dac_init();
     tc_setup();
+    solonoid_setup();
     //motor_encoder_calib();
 
-    //motor_encoder_reset();
-    // // Function motor_encoder_reset() does not work
     PIOD->PIO_CODR |= NOT_RST;
     printf(" \n\r"); // wait
     PIOD->PIO_SODR |= NOT_RST;
@@ -47,21 +46,23 @@ int main()
     /* Set output enable on PC2(D0) */
     PIOA->PIO_OER |= PIO_PA19;
     
-    CAN_MESSAGE msg;
-
-    int i;
+    CAN_MESSAGE rx;
     REG_PIOA_OWER |= PIO_PA19;
     
     while (1)
     {
-
-        can_receive(&msg, 0);
+        /* Recieve CAN data */
+        can_receive(&rx, 0);
         // printf("ID : %d\r\nLength: %d\r\nData: %x %x\r\n\n", msg.id, msg.data_length, msg.data[0], msg.data[1]);
         // delay(1000000);
-        update_ref((int16_t)msg.data[3]);
-        pid_controller();
-        //printf("%d\n\r", msg.data[3]);
-        pwm_run((int)msg.data[0]);
+
+        /* Check if node 1 has started game */
+        if (rx.data[3]) {
+            update_ref((int16_t)rx.data[3]);
+            pid_controller();
+            pwm_run((int)rx.data[0]);
+            run_solonoid((int)rx.data[2]);
+        }
         // int16_t value = motor_encoder_read();
         // printf("%d\n\r", value);
     }   

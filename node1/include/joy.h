@@ -17,6 +17,7 @@ typedef struct {
     unsigned char y_pos;
     unsigned char rpwm;
     int button;
+    int game;
     dir_t dir;
 } joy_t;
 

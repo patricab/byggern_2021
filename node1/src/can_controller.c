@@ -19,11 +19,7 @@ uint8_t can_controller_init()
         can_controller_bit_modify(MCP_CANCTRL, 0b11100000, MODE_CONFIG);
         // Self-test
         uint8_t value = can_controller_read(MCP_CANSTAT);
-<<<<<<< HEAD
-        printf("   CAN status: ");
-=======
         // printf("   MCP status: ");
->>>>>>> node2
 		//uart_tx(value);
 		// printf("%c (%x)\n\r", value, value);
         if ((value & MODE_MASK) != MODE_CONFIG) {
