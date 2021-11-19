@@ -106,13 +106,5 @@ void ui_score(void){
     oled_goto_pos(0, 15);
     oled_print8("Print score here");
 
-    // oled_reset();   
-    // oled_goto_pos(0, 15);
-    // oled_print8("Menu1 1");
-    // oled_goto_pos(2, 15);
-    // oled_print8("Menu1 2");
-    // oled_goto_pos(4, 15);
-    // oled_print8("Menu1 3");
-    // oled_goto_pos(6, 15);
-    // oled_print8("Menu1 4");
+
 }

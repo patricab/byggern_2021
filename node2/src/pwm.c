@@ -38,10 +38,3 @@ void pwm_run(int joystic){
     }
 }
 
-
-// Enable clock
-// Chose if ab or b
-// Disable PIO
-
-// PWM_CLK prescaler and divider 2MHz
-// CMRn dual slope and clock source

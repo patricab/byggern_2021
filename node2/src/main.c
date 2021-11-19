@@ -38,13 +38,6 @@ int main()
     if (ret > 0) {
         printf("Error: could not initialize CAN", 0);
     }
-
-    /* Disable pull-up on bit PC2(D0) */
-    PIOA->PIO_PUDR |= PIO_PA19;
-    /* Enable PIO controller on bit PC2(D0) */
-    PIOA->PIO_PER |= PIO_PA19;
-    /* Set output enable on PC2(D0) */
-    PIOA->PIO_OER |= PIO_PA19;
     
     CAN_MESSAGE rx;
     REG_PIOA_OWER |= PIO_PA19;
@@ -53,8 +46,6 @@ int main()
     {
         /* Recieve CAN data */
         can_receive(&rx, 0);
-        // printf("ID : %d\r\nLength: %d\r\nData: %x %x\r\n\n", rx.id, rx.data_length, rx.data[0], rx.data[1]);
-        // delay(1000000);
 
         /* Check if node 1 has started game */
         if (rx.data[4]) {
@@ -62,9 +53,6 @@ int main()
             pid_controller();
             pwm_run((int)rx.data[0]);
             run_solonoid((int)rx.data[2]);
-            // printf("%d\n\r", rx.data[3]);
         }
-        // int16_t value = motor_encoder_read();
-        // printf("%d\n\r", value);
     }   
 }

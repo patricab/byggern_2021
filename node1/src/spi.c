@@ -30,7 +30,5 @@ uint8_t spi_read(void)
         SPDR = 0x00;
         // Wait for transmission complete
         while(!(SPSR & (1<<SPIF)));
-        // printf("\r\n received:");
-        // printf("%x", SPDR);
         return SPDR;
     }

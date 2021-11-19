@@ -9,8 +9,8 @@
 volatile int flag = 0;
 
 // PID constants
-# define Kp 1
-# define Ti 10.0
+# define Kp 1 //7
+# define Ti 10 //2
 # define Td 0.0
 # define N 10
 # define T 0.01/1000.0 // Time between runs in microsec
@@ -30,8 +30,6 @@ volatile float uD[2] = {0, 0};
 
 
 void motor_controller_init() {
-    /* Disable pull-up */
-    //PIOD->PIO_PUDR |= EN;
  
     /* Enable PIO controller */
     PIOD->PIO_PER |= (EN | DIR | SEL | NOT_OE | NOT_RST);
@@ -123,9 +121,6 @@ void pid_controller(void) {
 
     // Compute error signal
     error[0] = (8000.0 - ref_float) - rot[0]; // Calibration is necessary prior
-    // printf("%d\n\r", (int)(8000 - ref));
-    // printf("%d\n\r", (int)rot[0]);
-    // printf("%d\n\r", (int)error[0]);
 
     // Compute controller gain (position gain)
     uP = Kp * abs(error[0]);
@@ -136,13 +131,11 @@ void pid_controller(void) {
     // SET MOTOR DIRECTION AND SEND U TO DAC
     if (error[0] > 0.0) {
         PIOD->PIO_CODR |= DIR; // Set direction left
-        // printf("L\n\r");
         dac_conversion(u);
     }
     else if (error[0] < 0.0) {
         PIOD->PIO_SODR |= DIR; // Set direction rigth
         dac_conversion(u);
-        // printf("R\n\r");
     }
 
     // Update previous signals
@@ -174,9 +167,8 @@ void TC8_Handler() { // TEST TIMER INTERRUPT
   static uint32_t Count;
 
   TC2->TC_CHANNEL[2].TC_SR;   //  INTERRUPT! Read and clear status register
-  if (Count++ == 10) {
+  if (Count++ == 10) { //set flag every 10 times the interrupt runs
     Count = 0;
-    PIOA->PIO_ODSR ^= PIO_PA19;  // Toggle LED every 1 Hz        
     flag = 1;
   }
 }

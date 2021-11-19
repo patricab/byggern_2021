@@ -6,9 +6,6 @@
 #include <bit.h>
 #include <uart.h>
 
-// Variables
-// static int rx_count = 0;
-// unsigned char rx_data[16] = {0};
 
 /**
 * NOTE: The scheema uses a 16 bit packet length, with 15 data bits, and a terminator 

@@ -17,13 +17,6 @@ int adc_init(void) {
     REG_PMC_PCER1 |= PMC_PCER1_PID37; // enable clock for ADC
     REG_ADC_MR |= ADC_MR_FREERUN;
     REG_ADC_CHER |= ADC_CHER_CH0; // enable adc for channel 0 (A7?)
-
-    // /* Enable channel 0. Check if enabled */
-    // REG_ADC_CHER |= (1 << 0);
-    // if (!(REG_ADC_CHSR & (1 << 0))) {
-    //     return 1;
-    // }
-
     return 0;
 }
 
@@ -48,7 +41,6 @@ unsigned char adc_read(void) {
  */
 int ir_on(void) {
     /* Get average IR values */
-    // unsigned char data = IR_average_filter();
     unsigned char data = adc_read();
     
     if(data < 30){
@@ -60,7 +52,6 @@ int ir_on(void) {
 }
 
 #define num_readings 5
-// unsigned char num_readings = 5;
 volatile unsigned char array[num_readings];
 volatile uint8_t index = 0;
 volatile  unsigned char total = 0;

@@ -94,7 +94,6 @@ void oled_print8(char* string)
         if (strlen(string) > 0)
         {
             int str_length = strlen(string);
-            // printf("%d\r\n", str_length);
         }
         for (int i = 0; i < strlen(string); i++) // divide string into characters
         {

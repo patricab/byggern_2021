@@ -21,9 +21,6 @@ void adc_test(void)
     while (1)
     {
         adc_read(data);
-        
-        // printf("%x\r\n", data[0] & 0xff);
-
         // 0,1: Joystick
         // 2, 3: L, R
         printf("Joystick: %x %x\r\n", data[0] & 0xff, data[1] & 0xff);

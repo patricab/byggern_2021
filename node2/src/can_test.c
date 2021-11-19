@@ -28,14 +28,14 @@ void can_test(void) {
     // msg.data[0] = 'H';
     // msg.data[1] = 'i';
 
-//     /* RX */
-//     while (1)
-//     {
-//         can_receive(&msg, 0);
-//         printf("ID : %d\r\nLength: %d\r\nData: %s\r\n\n", msg.id, msg.data_length, msg.data);
+    // /* RX */
+    // while (1)
+    // {
+    //     can_receive(&msg, 0);
+    //     printf("ID : %d\r\nLength: %d\r\nData: %s\r\n\n", msg.id, msg.data_length, msg.data);
         
-//         // printf("Test", 0);
-//         delay(1000000);
-//     }
+    //     // printf("Test", 0);
+    //     delay(1000000);
+    // }
     
-// }
+}
