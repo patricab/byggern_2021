@@ -53,15 +53,16 @@ int main()
     {
         /* Recieve CAN data */
         can_receive(&rx, 0);
-        // printf("ID : %d\r\nLength: %d\r\nData: %x %x\r\n\n", msg.id, msg.data_length, msg.data[0], msg.data[1]);
+        // printf("ID : %d\r\nLength: %d\r\nData: %x %x\r\n\n", rx.id, rx.data_length, rx.data[0], rx.data[1]);
         // delay(1000000);
 
         /* Check if node 1 has started game */
-        if (rx.data[3]) {
+        if (rx.data[4]) {
             update_ref((int16_t)rx.data[3]);
             pid_controller();
             pwm_run((int)rx.data[0]);
             run_solonoid((int)rx.data[2]);
+            // printf("%d\n\r", rx.data[3]);
         }
         // int16_t value = motor_encoder_read();
         // printf("%d\n\r", value);
