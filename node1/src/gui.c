@@ -62,14 +62,14 @@ int gui_run(joy_t *joy){
             ui_score();
             game_state = 0;
         } 
-    } else if (joy->dir == LEFT) { 
+    } else if (joy->dir == UP) { 
         menu_build();
         game_state = 0;
     }
 
     /* Loop state on boundary condition */
-    if (state == STATE_3 + 1){
-        state = STATE_1;
+    if (state == STATE_2 + 1){
+        state = STATE_3;
     }
     else if (state == STATE_1 - 1){
         state = STATE_3;
@@ -77,8 +77,10 @@ int gui_run(joy_t *joy){
 
     (*state_functions[state])(); // Run state
 
-    _delay_ms(200);
-    
+    if (game_state == 0){
+    _delay_ms(100);
+    }
+
     return game_state;
 }
 

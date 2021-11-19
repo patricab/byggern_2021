@@ -80,7 +80,7 @@ void joy_send(joy_t *joy)
         .data[1] = joy->y_pos,
         .data[2] = joy->button,
         .data[3] = joy->rpwm,
-        .data[3] = joy->game
+        .data[4] = joy->game
     };
 
     /* Transmit data */
