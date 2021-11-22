@@ -16,6 +16,7 @@ void joy_analog(unsigned char *data, joy_t *joy)
     joy->y_pos = (unsigned char)((data[0] * 100) / 255);
 
     joy->button = joy_but();
+    joy->left_but = left_but();
     joy->rpwm = data[3];
 }
 

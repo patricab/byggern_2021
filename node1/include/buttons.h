@@ -2,7 +2,7 @@
 #define BUTTONS_H
 
 #define JOY_BUT_PIN PINB0
-#define LEFT_BUT_PIN DDB1
+#define LEFT_BUT_PIN PINB1
 #define RIGHT_BUT_PIN DDB2
 
 /**
