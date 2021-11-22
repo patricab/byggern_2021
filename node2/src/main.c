@@ -30,6 +30,13 @@ int main()
     solonoid_setup();
     //motor_encoder_calib();
 
+    /* Disable pull-up on bit PC2(D0) */
+    PIOA->PIO_PUDR |= PIO_PA19;
+    /* Enable PIO controller on bit PC2(D0) */
+    PIOA->PIO_PER |= PIO_PA19;
+    /* Set output enable on PC2(D0) */
+    PIOA->PIO_OER |= PIO_PA19;
+
     PIOD->PIO_CODR |= NOT_RST;
     printf(" \n\r"); // wait
     PIOD->PIO_SODR |= NOT_RST;
@@ -40,7 +47,7 @@ int main()
     }
     
     CAN_MESSAGE rx;
-    REG_PIOA_OWER |= PIO_PA19;
+    // REG_PIOA_OWER |= PIO_PA19;
     
     while (1)
     {
@@ -49,10 +56,16 @@ int main()
 
         /* Check if node 1 has started game */
         if (rx.data[4]) {
-            update_ref((int16_t)rx.data[3]);
             pid_controller();
+            update_ref((int16_t)rx.data[3]);
             pwm_run((int)rx.data[0]);
             run_solonoid((int)rx.data[2]);
+            if (ir_on == 1){
+                PIOA->PIO_SODR |= PIO_PA19;
+            }
+            else{
+                PIOA->PIO_CODR |= PIO_PA19;
+            }
         }
     }   
 }
