@@ -50,5 +50,6 @@ int main(void)
 		/* Run state machine, send game state over CAN */
 		joy.game = (char)gui_run(&joy);
         joy_send(&joy);
+        //printf("%d\r\n", joy.left_but);
 	}
 }

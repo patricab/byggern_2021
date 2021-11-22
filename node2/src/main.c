@@ -28,7 +28,7 @@ int main()
     dac_init();
     tc_setup();
     solonoid_setup();
-    //motor_encoder_calib();
+    motor_encoder_calib();
 
     /* Disable pull-up on bit PC2(D0) */
     PIOA->PIO_PUDR |= PIO_PA19;
@@ -53,6 +53,8 @@ int main()
     {
         /* Recieve CAN data */
         can_receive(&rx, 0);
+        // int16_t value = motor_encoder_read();
+        // printf("%d\n\r", value);
 
         /* Check if node 1 has started game */
         if (rx.data[4]) {
@@ -60,11 +62,11 @@ int main()
             update_ref((int16_t)rx.data[3]);
             pwm_run((int)rx.data[0]);
             run_solonoid((int)rx.data[2]);
-            if (ir_on == 1){
-                PIOA->PIO_SODR |= PIO_PA19;
+            if (ir_on() == 1){
+                PIOA->PIO_CODR |= PIO_PA19;
             }
             else{
-                PIOA->PIO_CODR |= PIO_PA19;
+                PIOA->PIO_SODR |= PIO_PA19;
             }
         }
     }   

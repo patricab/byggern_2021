@@ -9,7 +9,7 @@
 volatile int flag = 0;
 
 // PID constants
-# define Kp 1 //7
+# define Kp 0 //7
 # define Ti 10 //2
 # define Td 0.0
 # define N 10
@@ -92,19 +92,20 @@ void motor_encoder_reset() {
 }
 
 void motor_encoder_calib(void) {
-    PIOD->PIO_SODR |= DIR; // Set direction, should run to the rigth
-    dac_conversion(1000);
+    PIOD->PIO_SODR |= DIR; // Set direction, should run to the right
+    dac_conversion(1500);
     int16_t cur_rot = motor_encoder_read();
     int16_t prev_rot = cur_rot+100;
     int i = 0;
     while (prev_rot != cur_rot)
     {
         prev_rot = cur_rot;
-        while (i < 1000) {i++;}
+        printf(" \n\r"); // wait
         cur_rot = motor_encoder_read();
     }
+    dac_conversion(0);
     motor_encoder_reset();
-    update_ref(0);
+    update_ref(255);
 }
 
 void pid_controller(void) {
@@ -120,7 +121,7 @@ void pid_controller(void) {
     // Reference as global
 
     // Compute error signal
-    error[0] = (8000.0 - ref_float) - rot[0]; // Calibration is necessary prior
+    error[0] = (8500.0 - ref_float) - rot[0]; // Calibration is necessary prior
 
     // Compute controller gain (position gain)
     uP = Kp * abs(error[0]);
