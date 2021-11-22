@@ -34,10 +34,19 @@ static state_t state_3() { // Game running
     oled_print8("Game running");
 }
 
-static state_t (*state_functions[3])() = {
+static state_t state_4() { // Scoreboard
+    game_state = 0;
+    oled_clear_pointer();
+    oled_reset();
+    oled_goto_pos(0, 15);
+    oled_print8("Print score here");
+}
+
+static state_t (*state_functions[4])() = {
     state_1,
     state_2,
-    state_3
+    state_3,
+    state_4
 };
  
 /**
@@ -48,10 +57,17 @@ static state_t (*state_functions[3])() = {
  */
 int gui_run(joy_t *joy){
     /* Change state based on joystick direction */
-    if (joy->dir == DOWN) { // Only works in menu
-        state++;
-    } else if (joy->dir == UP) {
-        state--;
+    if ((state == STATE_3) || (state == STATE_4)) {
+        if (joy->left_but == 1) {
+            state = STATE_1;
+            menu_build();
+        } 
+    } else {
+        if (joy->dir == DOWN) { // Only works in menu
+            state++;
+        } else if (joy->dir == UP) {
+            state--;
+        }
     }
     
     /* Build menu based on state */
@@ -59,26 +75,24 @@ int gui_run(joy_t *joy){
         if (state == STATE_1){ // Run game
             state = STATE_3;
         } else if (state == STATE_2){
-            ui_score();
-            game_state = 0;
+            state = STATE_4;
         } 
-    } else if (joy->dir == UP) { 
-        menu_build();
-        game_state = 0;
     }
 
     /* Loop state on boundary condition */
-    if (state == STATE_2 + 1){
-        state = STATE_3;
-    }
-    else if (state == STATE_1 - 1){
-        state = STATE_3;
+    if (!(state == STATE_3) || !(state == STATE_4)){
+        if (state == STATE_2 + 1){
+            state = STATE_1;
+        }
+        else if (state == STATE_1 - 1){
+            state = STATE_2;
+        }
     }
 
     (*state_functions[state])(); // Run state
 
     if (game_state == 0){
-    _delay_ms(100);
+        _delay_ms(100);
     }
 
     return game_state;
@@ -87,8 +101,7 @@ int gui_run(joy_t *joy){
 /**
  * @brief Build OLED GUI menu
  */
-void menu_build(void)
-{
+void menu_build(void){
     // Start in state 1
     state = STATE_1; 
 
@@ -98,13 +111,4 @@ void menu_build(void)
     oled_print8("Start spill");
     oled_goto_pos(2, 15);
     oled_print8("Scoreboard");
-}
-
-void ui_score(void){
-    oled_clear_pointer();
-    oled_reset();
-    oled_goto_pos(0, 15);
-    oled_print8("Print score here");
-
-
 }
